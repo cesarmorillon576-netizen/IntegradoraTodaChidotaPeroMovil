@@ -1,11 +1,22 @@
 package com.example.integradoramovil.network
 
 import com.example.integradoramovil.modelos.Animal
+import com.example.integradoramovil.modelos.LoginResponse
 import com.example.integradoramovil.modelos.Raza
+import retrofit2.Response
 import retrofit2.http.*
 import retrofit2.http.GET
 
 interface apiservice {
+
+    // rutas de login
+    @FormUrlEncoded
+    @POST("login")
+    suspend fun login(
+        @Field("correo") correo:String,
+        @Field("password")password:String
+    ): Response<LoginResponse>
+
 
     // rutas para razas
     @GET("raza")
@@ -39,7 +50,7 @@ interface apiservice {
 
     // rutas para animales
     @GET("animal")
-    suspend fun obtenerAnimales(): List<Animal>
+    suspend fun obtenerAnimales():  List<Animal>
 
     @FormUrlEncoded
     @POST("animal")

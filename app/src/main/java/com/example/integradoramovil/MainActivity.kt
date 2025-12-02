@@ -1,22 +1,31 @@
 package com.example.integradoramovil
 
+import android.R
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,10 +33,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.integradoramovil.pantallas.pantallaAnimal
-import com.example.integradoramovil.pantallas.pantallaRaza
+import com.example.integradoramovil.pantallas.*
+import com.example.integradoramovil.ui.theme.Background
 import com.example.integradoramovil.ui.theme.IntegradoraMovilTheme
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
+import com.example.integradoramovil.viewModel.LoginViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +47,7 @@ class MainActivity : ComponentActivity() {
             IntegradoraMovilTheme {
                 val viewModel: AnimalRazaUserViewModel = viewModel()
                 Box(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize().statusBarsPadding().imePadding()
                 ){
                     MAIN(viewModel)
                 }
@@ -54,8 +64,8 @@ fun MAIN(viewModel: AnimalRazaUserViewModel){
     val navBackStack = navController.currentBackStackEntryAsState()
     val rutaActual = navBackStack.value?.destination?.route
 
-    val barras = rutaActual != "login"
-
+    val barras = rutaActual != "loginfirst" && rutaActual != "loginsecond"
+    Log.e( "estado", "${barras}")
     Scaffold(
         topBar = {
             if(barras){
@@ -66,9 +76,13 @@ fun MAIN(viewModel: AnimalRazaUserViewModel){
                                 "animales" -> "Animales"
                                 "razas" -> "Razas"
                                 else -> ""
-                            }
+                            },
+                            color = MaterialTheme.colorScheme.onBackground
                         )
-                    }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Background
+                    )
                 )
             }
         },
@@ -89,11 +103,11 @@ fun MAIN(viewModel: AnimalRazaUserViewModel){
                     NavigationBarItem(
                         selected = rutaActual == "razas",
                         onClick = {
-                            navController.navigate("animales")
+                            navController.navigate("raazs")
                         },
                         icon = {},
                         label = {
-                            Text("Animales")
+                            Text("Razas")
                         }
                     )
 
@@ -104,10 +118,14 @@ fun MAIN(viewModel: AnimalRazaUserViewModel){
         NavHost(
             modifier = Modifier.padding(padding),
             navController = navController,
-            startDestination = "login",
+            startDestination = "loginfirst",
         ){
-            composable("login"){
-                // el login
+            composable("loginfirst"){
+                loginFirst(navController)
+            }
+
+            composable("loginsecond") {
+                LoginSecond(navController)
             }
 
             composable("razas"){
@@ -117,6 +135,8 @@ fun MAIN(viewModel: AnimalRazaUserViewModel){
             composable("animales"){
                 pantallaAnimal(navController, viewModel)
             }
+
+
 
         }
     }

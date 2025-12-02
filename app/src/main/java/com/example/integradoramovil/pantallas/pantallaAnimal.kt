@@ -2,7 +2,9 @@ package com.example.integradoramovil.pantallas
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,9 +17,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.integradoramovil.componentes.tarjeta
+import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,15 +33,19 @@ fun pantallaAnimal(navController: NavController, viewModel: AnimalRazaUserViewMo
         viewModel.cargarAnimales()
     }
 
-    val animales = viewModel.animales.value
+    val animales: List<Animal> = viewModel.animales.value
 
     Box(
         modifier = Modifier
             .fillMaxSize()
     ){
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
+        ) {
             items(animales){ a ->
-                tarjeta(a.nombre, a.visibilidad, null)
+                tarjeta(a.nombre, a.visibilidad)
+                Spacer(modifier = Modifier.height(10.dp))
+
             }
         }
     }

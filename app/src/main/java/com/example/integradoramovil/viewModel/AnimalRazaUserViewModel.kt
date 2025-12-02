@@ -4,18 +4,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.modelos.Raza
-import com.example.integradoramovil.modelos.Usuario
 import com.example.integradoramovil.network.RetroFitClient
 
 class AnimalRazaUserViewModel: ViewModel() {
-    val user = mutableStateOf<Usuario?>(null)
 
     val animales = mutableStateOf<List<Animal>>(emptyList())
 
     val razas = mutableStateOf<List<Raza>>(emptyList())
-
-    // funciones de usuario (login/logout)
-
 
     // funciones de razas
 

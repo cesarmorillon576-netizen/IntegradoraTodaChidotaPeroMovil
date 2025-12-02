@@ -1,8 +1,16 @@
 package com.example.integradoramovil.modelos
 
-data class Usuario(
+data class LoginResponse(
+    val user: User
+)
+
+data class User(
+    val id: Int,
     val nombre: String,
-    val correo: String
+    val correo: String,
+    val telefono: String,
+    //  val estado: String,
+    val id_rol: Int
 )
 
 data class Raza(
@@ -18,3 +26,4 @@ data class Animal(
     val nombre: String,
     val visibilidad: String
 )
+
