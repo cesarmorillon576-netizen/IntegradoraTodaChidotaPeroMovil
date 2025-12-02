@@ -1,9 +1,9 @@
 package com.example.integradoramovil.network
 
-import com.google.firebase.appdistribution.gradle.ApiService
-import okhttp3.OkHttpClient
+
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
+import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetroFitClient {
@@ -22,5 +22,6 @@ object RetroFitClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val api: ApiService = retrofit.create(ApiService::class.java)
+    val api: apiservice = retrofit.create(apiservice::class.java)
 }
+

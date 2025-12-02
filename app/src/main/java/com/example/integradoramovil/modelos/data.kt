@@ -5,15 +5,15 @@ data class Usuario(
     val correo: String
 )
 
-data class raza(
+data class Raza(
     val id_raza: Int,
     val nombre: String,
     val visibilidad: String,
     val id_animal: Int,
-    val animal: animal
+    val animal: String
 )
 
-data class animal(
+data class Animal(
     val id_animal: Int,
     val nombre: String,
     val visibilidad: String

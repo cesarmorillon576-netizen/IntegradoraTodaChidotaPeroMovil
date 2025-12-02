@@ -1,7 +1,7 @@
 package com.example.integradoramovil.network
 
-import com.example.integradoramovil.modelos.animal
-import com.example.integradoramovil.modelos.raza
+import com.example.integradoramovil.modelos.Animal
+import com.example.integradoramovil.modelos.Raza
 import retrofit2.http.*
 import retrofit2.http.GET
 
@@ -9,21 +9,21 @@ interface apiservice {
 
     // rutas para razas
     @GET("raza")
-    suspend fun obtenerRazas(): List<raza>
+    suspend fun obtenerRazas(): List<Raza>
 
     @FormUrlEncoded
     @POST("raza")
     suspend fun crearRaza(
         @Field("nombre") nombre: String,
         @Field("id_animal") id_animal: Int
-    ): raza
+    ): Raza
 
     @FormUrlEncoded
     @PUT("raza")
     suspend fun actualizarRaza(
         @Field("nombre") nombre: String,
         @Field("id_animal") id_animal: Int
-    ): raza
+    ): Raza
 
     @FormUrlEncoded
     @DELETE("raza")
@@ -39,7 +39,7 @@ interface apiservice {
 
     // rutas para animales
     @GET("animal")
-    suspend fun obtenerAnimales(): List<animal>
+    suspend fun obtenerAnimales(): List<Animal>
 
     @FormUrlEncoded
     @POST("animal")
@@ -56,6 +56,12 @@ interface apiservice {
     @FormUrlEncoded
     @DELETE("animal")
     suspend fun borrarAnimal(
+        @Field("id") id: Int
+    )
+
+    @FormUrlEncoded
+    @DELETE("animal/cambiar-estado/{id}")
+    suspend fun cambiarEstadoAnimal(
         @Field("id") id: Int
     )
 }

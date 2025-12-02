@@ -1,17 +1,33 @@
 package com.example.integradoramovil
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.integradoramovil.pantallas.pantallaAnimal
+import com.example.integradoramovil.pantallas.pantallaRaza
 import com.example.integradoramovil.ui.theme.IntegradoraMovilTheme
+import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,29 +35,92 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             IntegradoraMovilTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                val viewModel: AnimalRazaUserViewModel = viewModel()
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ){
+                    MAIN(viewModel)
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GreetingPreview() {
-    IntegradoraMovilTheme {
-        Greeting("Android")
+fun MAIN(viewModel: AnimalRazaUserViewModel){
+    val navController = rememberNavController()
+    val navBackStack = navController.currentBackStackEntryAsState()
+    val rutaActual = navBackStack.value?.destination?.route
+
+    val barras = rutaActual != "login"
+
+    Scaffold(
+        topBar = {
+            if(barras){
+                TopAppBar(
+                    title = {
+                        Text(
+                            when(rutaActual){
+                                "animales" -> "Animales"
+                                "razas" -> "Razas"
+                                else -> ""
+                            }
+                        )
+                    }
+                )
+            }
+        },
+        bottomBar = {
+            if(barras){
+                NavigationBar {
+                    NavigationBarItem(
+                        selected = rutaActual == "animales",
+                        onClick = {
+                            navController.navigate("animales")
+                        },
+                        icon = {},
+                        label = {
+                            Text("Animales")
+                        }
+                    )
+
+                    NavigationBarItem(
+                        selected = rutaActual == "razas",
+                        onClick = {
+                            navController.navigate("animales")
+                        },
+                        icon = {},
+                        label = {
+                            Text("Animales")
+                        }
+                    )
+
+                }
+            }
+        }
+    ) { padding ->
+        NavHost(
+            modifier = Modifier.padding(padding),
+            navController = navController,
+            startDestination = "login",
+        ){
+            composable("login"){
+                // el login
+            }
+
+            composable("razas"){
+                pantallaRaza(navController, viewModel)
+            }
+
+            composable("animales"){
+                pantallaAnimal(navController, viewModel)
+            }
+
+        }
     }
+
+
+
 }
