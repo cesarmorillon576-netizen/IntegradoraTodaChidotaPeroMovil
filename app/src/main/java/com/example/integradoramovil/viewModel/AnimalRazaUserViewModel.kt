@@ -46,6 +46,27 @@ class AnimalRazaUserViewModel: ViewModel() {
         }
     }
 
+    suspend fun crearRazas(raza: Raza): Boolean{
+        return try {
+            RetroFitClient.api.crearRaza(raza.nombre, raza.id_animal)
+            cargarRazas()
+            true
+        }catch(e: Exception){
+            println(e.message)
+            false
+        }
+    }
+
+    suspend fun cambiarEstado(raza: Raza): Boolean{
+        return try{
+            RetroFitClient.api.cambiarEstadoRaza(raza.id_raza)
+            true
+        }catch(e: Exception){
+            println(e.message)
+            false
+        }
+    }
+
     // Funciones de animales
     suspend fun cargarAnimales(): Boolean{
         return try{
