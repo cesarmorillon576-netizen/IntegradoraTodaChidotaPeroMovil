@@ -58,6 +58,7 @@ interface apiservice {
         @Field("nombre") nombre: String
     )
 
+    @FormUrlEncoded
     @PUT("animal/{id}")
     suspend fun actualizarAnimal(
         @Path("id") id: Int,

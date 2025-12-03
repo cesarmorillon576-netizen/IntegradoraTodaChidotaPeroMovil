@@ -139,7 +139,7 @@ fun tarjeta(animal: Animal, viewModel: AnimalRazaUserViewModel){
                         ) {
                             Icon(
                                 painter = painterResource(id = com.example.integradoramovil.R.drawable.cambiar_estado),
-                                contentDescription = "Editar"
+                                contentDescription = "Cambiar estado"
                             )
                         }
 
@@ -154,7 +154,7 @@ fun tarjeta(animal: Animal, viewModel: AnimalRazaUserViewModel){
                         ) {
                             Icon(
                                 painter = painterResource(id = com.example.integradoramovil.R.drawable.borrar),
-                                contentDescription = "Editar"
+                                contentDescription = "Borrar"
                             )
                         }
 
