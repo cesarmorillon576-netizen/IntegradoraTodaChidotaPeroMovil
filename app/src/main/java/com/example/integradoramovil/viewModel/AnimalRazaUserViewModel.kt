@@ -29,7 +29,7 @@ class AnimalRazaUserViewModel: ViewModel() {
 
     suspend fun modificarAnimal(animal: Animal): Boolean{
         return try{
-            RetroFitClient.api.actualizarAnimal(animal.nombre)
+            RetroFitClient.api.actualizarAnimal(animal.id_animal, animal.nombre)
             cargarAnimales()
             true
         }catch(e: Exception){
@@ -65,6 +65,7 @@ class AnimalRazaUserViewModel: ViewModel() {
     suspend fun cambiarEstado(animal: Animal): Boolean{
         return try{
             RetroFitClient.api.cambiarEstadoAnimal(animal.id_animal)
+            cargarAnimales()
             true
         }catch(e: Exception){
             println(e.message)

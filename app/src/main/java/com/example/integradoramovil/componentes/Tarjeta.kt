@@ -23,11 +23,18 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.integradoramovil.modelos.Animal
+import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.ui.theme.BackgroundCard
+import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
+import kotlinx.coroutines.launch
 
+
+// tarjeta de raza
 @Composable
-fun tarjeta(nombre: String, visibilidad: String, animal: Animal?){
+fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
     Card (
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -40,33 +47,60 @@ fun tarjeta(nombre: String, visibilidad: String, animal: Animal?){
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Column {
-                Text("Nombre: ${nombre}")
-                Text("Estado: ${visibilidad}")
-                Text("Animal: ${animal?.nombre}")
+                Text("Nombre: ${raza.nombre}")
+                Text("Estado: ${raza.visibilidad}")
+                Text("Animal: ${animal.nombre}")
             }
 
-            Column {
-                Button(
-                    onClick = {}
-                ) {
-                    Text("hola")
-                }
+            Row{
+                // Editar
                 IconButton(
-                    modifier = Modifier,
-                    onClick = {}
+                    onClick = {
+
+                    }
                 ) {
-                    /*
                     Icon(
-                        painter = painterResource()
-                    )*/
+                        painter = painterResource(id = com.example.integradoramovil.R.drawable.editar),
+                        contentDescription = "Editar"
+                    )
+                }
+
+                // Cambiar estado
+                IconButton(
+                    onClick = {
+                        viewModel.viewModelScope.launch {
+
+                        }
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(id = com.example.integradoramovil.R.drawable.cambiar_estado),
+                        contentDescription = "Editar"
+                    )
+                }
+
+                // Eliminar
+                IconButton(
+                    onClick = {
+                        viewModel.viewModelScope.launch {
+
+                        }
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(id = com.example.integradoramovil.R.drawable.borrar),
+                        contentDescription = "Editar"
+                    )
                 }
             }
         }
     }
 }
 
+
+// tarjeta de animal
 @Composable
-fun tarjeta(nombre: String, visibilidad: String){
+fun tarjeta(animal: Animal, viewModel: AnimalRazaUserViewModel){
     Card (
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -79,16 +113,54 @@ fun tarjeta(nombre: String, visibilidad: String){
         ){
             items(1){
                 Column{
-                    Text("Nombre: ${nombre}")
-                    Text("Estado: ${visibilidad}")
+                    Text("Nombre: ${animal.nombre}")
+                    Text("Estado: ${animal.visibilidad}")
 
                     Row{
-                        Button(
-                            onClick = {}
+                        // Editar
+                        IconButton(
+                            onClick = {
+
+                            }
                         ) {
-                            Text("hola")
+                            Icon(
+                                painter = painterResource(id = com.example.integradoramovil.R.drawable.editar),
+                                contentDescription = "Editar"
+                            )
                         }
+
+                        // Cambiar estado
+                        IconButton(
+                            onClick = {
+                                viewModel.viewModelScope.launch {
+                                    viewModel.cambiarEstado(animal)
+                                }
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = com.example.integradoramovil.R.drawable.cambiar_estado),
+                                contentDescription = "Editar"
+                            )
+                        }
+
+                        // Eliminar
+                        IconButton(
+                            onClick = {
+                                viewModel.viewModelScope.launch {
+                                    println("click en eliminar")
+                                    viewModel.eliminarAnimal(animal)
+                                }
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = com.example.integradoramovil.R.drawable.borrar),
+                                contentDescription = "Editar"
+                            )
+                        }
+
+
                     }
+
                 }
             }
 
@@ -96,9 +168,10 @@ fun tarjeta(nombre: String, visibilidad: String){
     }
 }
 
-
 @Preview
 @Composable
 fun preview(){
-    tarjeta("hola", "si")
+    val a = Animal(1, "hola", "visible")
+    val viewModel: AnimalRazaUserViewModel = viewModel()
+    tarjeta(a, viewModel)
 }

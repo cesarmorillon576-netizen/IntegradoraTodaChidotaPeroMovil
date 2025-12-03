@@ -14,9 +14,9 @@ data class User(
 )
 
 data class Raza(
-    val id_raza: Int,
-    val nombre: String,
-    val visibilidad: String,
+    val id_raza: Int ,
+    val nombre: String ,
+    val visibilidad: String ,
     val id_animal: Int,
     val animal: String
 )

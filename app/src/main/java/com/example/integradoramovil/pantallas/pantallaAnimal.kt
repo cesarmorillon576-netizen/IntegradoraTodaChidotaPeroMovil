@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,7 @@ import androidx.navigation.NavController
 import com.example.integradoramovil.componentes.tarjeta
 import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +35,7 @@ fun pantallaAnimal(navController: NavController, viewModel: AnimalRazaUserViewMo
         viewModel.cargarAnimales()
     }
 
-    val animales: List<Animal> = viewModel.animales.value
+    val animales by viewModel.animales
 
     Box(
         modifier = Modifier
@@ -42,8 +44,8 @@ fun pantallaAnimal(navController: NavController, viewModel: AnimalRazaUserViewMo
         LazyColumn(
             modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
         ) {
-            items(animales){ a ->
-                tarjeta(a.nombre, a.visibilidad)
+            items(animales, key = {it.id_animal}){ a ->
+                tarjeta(a, viewModel)
                 Spacer(modifier = Modifier.height(10.dp))
 
             }

@@ -58,21 +58,20 @@ interface apiservice {
         @Field("nombre") nombre: String
     )
 
-    @FormUrlEncoded
-    @PUT("animal")
+    @PUT("animal/{id}")
     suspend fun actualizarAnimal(
+        @Path("id") id: Int,
         @Field("nombre") nombre: String
     )
 
-    @FormUrlEncoded
-    @DELETE("animal")
+    @DELETE("animal/{id}")
     suspend fun borrarAnimal(
-        @Field("id") id: Int
+        @Path("id") id: Int
     )
 
-    @FormUrlEncoded
-    @DELETE("animal/cambiar-estado/{id}")
+
+    @PUT("animal/cambiar-estado/{id}")
     suspend fun cambiarEstadoAnimal(
-        @Field("id") id: Int
+        @Path("id") id: Int
     )
 }
