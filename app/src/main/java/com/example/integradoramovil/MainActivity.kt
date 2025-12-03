@@ -92,7 +92,15 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }else{
                                     viewModel.viewModelScope.launch {
-                                        // aqui crea la raza
+                                        viewModel.crearRazas(
+                                            Raza(
+                                                0,
+                                                "",
+                                                "",
+                                                0,
+                                                ""
+                                            )
+                                        )
                                     }
                                 }
                                 mostrarModal = false
