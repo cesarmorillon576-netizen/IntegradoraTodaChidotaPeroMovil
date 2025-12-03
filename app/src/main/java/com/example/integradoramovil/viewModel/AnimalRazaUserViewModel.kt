@@ -13,7 +13,38 @@ class AnimalRazaUserViewModel: ViewModel() {
     val razas = mutableStateOf<List<Raza>>(emptyList())
 
     // funciones de razas
+    suspend fun cargarRazas(): Boolean {
+        return try {
+            val res = RetroFitClient.api.obtenerRazas()
+            razas.value = res
+            true
+        } catch(e: Exception) {
+            println(e.message)
+            false
+        }
+    }
 
+    suspend fun modificarRaza(raza: Raza): Boolean {
+        return try{
+            RetroFitClient.api.actualizarRaza(raza.nombre, raza.id_animal)
+            cargarRazas()
+            true
+        }catch(e: Exception){
+            println(e.message)
+            false
+        }
+    }
+
+    suspend fun eliminarRaza(raza: Raza): Boolean{
+        return try {
+            RetroFitClient.api.eliminarRaza(raza.id_raza)
+            cargarAnimales()
+            true
+        }catch (e: Exception){
+            println(e.message)
+            false
+        }
+    }
 
     // Funciones de animales
     suspend fun cargarAnimales(): Boolean{
