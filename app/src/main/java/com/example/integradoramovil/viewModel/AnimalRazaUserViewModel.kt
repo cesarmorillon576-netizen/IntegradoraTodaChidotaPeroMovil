@@ -13,7 +13,7 @@ class AnimalRazaUserViewModel: ViewModel() {
     val razas = mutableStateOf<List<Raza>>(emptyList())
 
     // funciones de razas
-
+    
 
     // Funciones de animales
     suspend fun cargarAnimales(): Boolean{

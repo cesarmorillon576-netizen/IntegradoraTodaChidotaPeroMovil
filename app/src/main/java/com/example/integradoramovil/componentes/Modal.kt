@@ -2,6 +2,7 @@ package com.example.integradoramovil.componentes
 
 import androidx.appcompat.widget.DialogTitle
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
@@ -59,55 +60,58 @@ fun modal(
             }
             )},
         text = {
-            TextField(
-                value = nombre,
-                onValueChange = { nombre = it },
-                label = {
-                    if(raza == null){
-                        Text("Nombre del animal")
-                    } else{
-                        Text("Nombre de la raza")
-                    }
-                }
-            )
-
-            if(raza != null){
-                Spacer(modifier = Modifier.padding(8.dp))
-                Text("Animal asociado: ")
-
-                ExposedDropdownMenuBox(
-                    expanded = expanded,
-                    onExpandedChange = { expanded = !expanded }
-                ) {
-
-                    // Campo que muestra el seleccionado
-                    TextField(
-                        value = animalSeleccionado,
-                        onValueChange = {},
-                        readOnly = true,
-                        modifier = Modifier.menuAnchor()
-                    )
-
-                    // Items desplegables
-                    ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
-                    ) {
-                        viewModel.animales.value.forEach { animal ->
-                            DropdownMenuItem(
-                                text = { Text(animal.nombre) },
-                                onClick = {
-                                    animalSeleccionado = animal.nombre
-                                    idAnimalSeleccionado = animal.id_animal
-                                    expanded = false
-                                }
-                            )
+            Column {
+                TextField(
+                    value = nombre,
+                    onValueChange = { nombre = it },
+                    label = {
+                        if(raza == null){
+                            Text("Nombre del animal")
+                        } else{
+                            Text("Nombre de la raza")
                         }
                     }
+                )
+
+                if(raza != null){
+                    Spacer(modifier = Modifier.padding(8.dp))
+                    Text("Animal asociado: ")
+
+                    ExposedDropdownMenuBox(
+                        expanded = expanded,
+                        onExpandedChange = { expanded = !expanded }
+                    ) {
+
+                        // Campo que muestra el seleccionado
+                        TextField(
+                            value = animalSeleccionado,
+                            onValueChange = {},
+                            readOnly = true,
+                            modifier = Modifier.menuAnchor()
+                        )
+
+                        // Items desplegables
+                        ExposedDropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false }
+                        ) {
+                            viewModel.animales.value.forEach { animal ->
+                                DropdownMenuItem(
+                                    text = { Text(animal.nombre) },
+                                    onClick = {
+                                        animalSeleccionado = animal.nombre
+                                        idAnimalSeleccionado = animal.id_animal
+                                        expanded = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+
+
                 }
-
-
             }
+
         },
 
         confirmButton = {
@@ -127,4 +131,10 @@ fun modal(
         }
 
     )
+}
+
+@Preview
+@Composable
+fun la_preview(){
+
 }
