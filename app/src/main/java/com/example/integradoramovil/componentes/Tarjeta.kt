@@ -56,7 +56,9 @@ fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
                 // Editar
                 IconButton(
                     onClick = {
+                        viewModel.viewModelScope.launch {
 
+                        }
                     }
                 ) {
                     Icon(
@@ -69,7 +71,7 @@ fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
                 IconButton(
                     onClick = {
                         viewModel.viewModelScope.launch {
-
+                            viewModel.cambiarEstado(raza)
                         }
                     }
                 ) {
@@ -83,7 +85,8 @@ fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
                 IconButton(
                     onClick = {
                         viewModel.viewModelScope.launch {
-
+                            println("click en eliminar")
+                            viewModel.eliminarRazr(raza)
                         }
                     }
                 ) {
