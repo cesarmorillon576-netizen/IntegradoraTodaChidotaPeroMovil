@@ -24,7 +24,7 @@ import com.example.integradoramovil.ui.theme.Background
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 
 @Composable
-fun pantallaRaza(navController: NavController, viewModel: AnimalRazaUserViewModel){
+fun pantallaRaza(navController: NavController, viewModel: AnimalRazaUserViewModel) {
     LaunchedEffect(Unit) {
         viewModel.cargarRazas()
     }
@@ -34,15 +34,14 @@ fun pantallaRaza(navController: NavController, viewModel: AnimalRazaUserViewMode
 
     Box(
         modifier = Modifier
-            .fillMaxSize().
-            background(Background)
-    ){
+            .fillMaxSize().background(Background)
+    ) {
         LazyColumn(
             modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
         ) {
-            items(razas, key = {it.id_raza}){ r ->
-                for(a in animales) {
-                    if(r.id_animal == a.id_animal)
+            items(razas, key = { it.id_raza }) { r ->
+                for (a in animales) {
+                    if (r.id_animal == a.id_animal)
                         tarjeta(r, a, viewModel)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
