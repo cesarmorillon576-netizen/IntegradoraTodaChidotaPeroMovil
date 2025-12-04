@@ -37,16 +37,16 @@ interface apiservice {
         @Field("id_animal") id_animal: Int?
     )
 
-    @FormUrlEncoded
-    @DELETE("raza")
+
+    @DELETE("raza/{id}")
     suspend fun eliminarRaza(
-        @Field("id_raza") id_raza: Int
+        @Path("id_raza") id_raza: Int
     )
 
-    @FormUrlEncoded
-    @PUT("cambiar-estado/{id_raza}")
+
+    @PUT("raza/cambiar-estado/{id_raza}")
     suspend fun cambiarEstadoRaza(
-        @Field("id_raza") id_raza: Int
+        @Path("id_raza") id_raza: Int
     )
 
     // rutas para animales

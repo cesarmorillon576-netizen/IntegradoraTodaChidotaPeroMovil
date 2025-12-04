@@ -50,7 +50,10 @@ class MainActivity : ComponentActivity() {
             IntegradoraMovilTheme {
                 val viewModel: AnimalRazaUserViewModel = viewModel()
                 var mostrarModal by remember { mutableStateOf(false) }
+                var mostrarModalEditar by remember {mutableStateOf(false)}
                 var razaSeleccionada by remember {mutableStateOf<Raza?>(null)}
+                var animalSeleccionado by remember {mutableStateOf<Animal?>(null)}
+
                 Box(
                     modifier = Modifier.fillMaxSize().statusBarsPadding().imePadding()
                 ){
@@ -58,8 +61,10 @@ class MainActivity : ComponentActivity() {
                         mostrarModal = mostrarModal,
                         abrirModal = { laRaza ->
                             razaSeleccionada = laRaza
+                            animalSeleccionado = null
                             mostrarModal = true
                                      },
+
                         cerrarModal = {mostrarModal = false}
                     )
 
@@ -106,7 +111,12 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun MAIN(viewModel: AnimalRazaUserViewModel, mostrarModal: Boolean, abrirModal: (Raza?) -> Unit, cerrarModal: () -> Unit){
+    fun MAIN(
+        viewModel: AnimalRazaUserViewModel,
+        mostrarModal: Boolean, abrirModal: (Raza?) -> Unit,
+        cerrarModal: () -> Unit
+
+    ) {
 
         val navController = rememberNavController()
         val navBackStack = navController.currentBackStackEntryAsState()

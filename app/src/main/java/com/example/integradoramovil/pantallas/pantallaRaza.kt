@@ -48,8 +48,3 @@ fun pantallaRaza(navController: NavController, viewModel: AnimalRazaUserViewMode
     }
 }
 
-@Preview
-@Composable
-fun razasPreview() {
-    pantallaRaza()
-}
