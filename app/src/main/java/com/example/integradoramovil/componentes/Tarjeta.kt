@@ -32,6 +32,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.modelos.Raza
+import com.example.integradoramovil.ui.theme.Background
 import com.example.integradoramovil.ui.theme.BackgroundCard
 import com.example.integradoramovil.ui.theme.BackgroundCard2
 import com.example.integradoramovil.ui.theme.dropDownBackground
@@ -74,7 +75,7 @@ fun tarjeta(
 
                         withStyle(style = SpanStyle(
                             color = if(raza.visibilidad == "visible") redText
-                            else BackgroundCard)) {
+                            else Background)) {
                             append(raza.nombre)
                         }
                     }
@@ -91,7 +92,7 @@ fun tarjeta(
 
                         withStyle(style = SpanStyle(
                             color = if(raza.visibilidad == "visible") redText
-                            else BackgroundCard)) {
+                            else Background)) {
                             append(raza.visibilidad)
                         }
                     }
@@ -107,7 +108,7 @@ fun tarjeta(
 
                         withStyle(style = SpanStyle(
                             color = if(raza.visibilidad == "visible") redText
-                            else BackgroundCard)) {
+                            else Background)) {
                             append(animal.nombre)
                         }
                     }
@@ -198,7 +199,7 @@ fun tarjeta(
 
                             withStyle(style = SpanStyle(
                                 color = if(animal.visibilidad == "visible") redText
-                                else BackgroundCard)) {
+                                else Background)) {
                                 append(animal.nombre)
                             }
                         }
@@ -214,7 +215,7 @@ fun tarjeta(
 
                             withStyle(style = SpanStyle(
                                 color = if(animal.visibilidad == "visible") redText
-                                else BackgroundCard)) {
+                                else Background)) {
                                 append(animal.visibilidad)
                             }
                         }
