@@ -117,6 +117,9 @@ fun modal(
         confirmButton = {
             TextButton(
                 onClick = {
+                    if(raza != null && idAnimalSeleccionado == null){
+                        return@TextButton
+                    }
                     onConfirmation(nombre, idAnimalSeleccionado)
                 }
             ) {

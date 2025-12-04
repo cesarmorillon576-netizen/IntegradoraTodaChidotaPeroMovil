@@ -1,20 +1,15 @@
 package com.example.integradoramovil
 
-import android.R
-import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -31,10 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -48,7 +40,6 @@ import com.example.integradoramovil.pantallas.*
 import com.example.integradoramovil.ui.theme.Background
 import com.example.integradoramovil.ui.theme.IntegradoraMovilTheme
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
-import com.example.integradoramovil.viewModel.LoginViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
