@@ -23,12 +23,17 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.integradoramovil.componentes.tarjeta
 import com.example.integradoramovil.modelos.Animal
+import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun pantallaAnimal(navController: NavController, viewModel: AnimalRazaUserViewModel){
+fun pantallaAnimal(
+    navController: NavController,
+    viewModel: AnimalRazaUserViewModel,
+    abrirEditar: (Raza?, Animal?) -> Unit
+){
 
 
     LaunchedEffect(Unit) {
@@ -45,7 +50,7 @@ fun pantallaAnimal(navController: NavController, viewModel: AnimalRazaUserViewMo
             modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
         ) {
             items(animales, key = {it.id_animal}){ a ->
-                tarjeta(a, viewModel)
+                tarjeta(a, viewModel, abrirEditar)
                 Spacer(modifier = Modifier.height(10.dp))
 
             }

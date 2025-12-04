@@ -34,7 +34,12 @@ import kotlinx.coroutines.launch
 
 // tarjeta de raza
 @Composable
-fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
+fun tarjeta(
+    raza: Raza,
+    animal: Animal,
+    viewModel: AnimalRazaUserViewModel,
+    abrirEditar: (Raza?, Animal?) -> Unit
+) {
     Card (
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -56,9 +61,7 @@ fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
                 // Editar
                 IconButton(
                     onClick = {
-                        viewModel.viewModelScope.launch {
-
-                        }
+                        abrirEditar(raza, animal)
                     }
                 ) {
                     Icon(
@@ -103,7 +106,11 @@ fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
 
 // tarjeta de animal
 @Composable
-fun tarjeta(animal: Animal, viewModel: AnimalRazaUserViewModel){
+fun tarjeta(
+    animal: Animal,
+    viewModel: AnimalRazaUserViewModel,
+    abrirEditar: (Raza?, Animal?) -> Unit
+){
     Card (
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -123,7 +130,7 @@ fun tarjeta(animal: Animal, viewModel: AnimalRazaUserViewModel){
                         // Editar
                         IconButton(
                             onClick = {
-
+                                abrirEditar(null, animal)
                             }
                         ) {
                             Icon(
@@ -171,10 +178,3 @@ fun tarjeta(animal: Animal, viewModel: AnimalRazaUserViewModel){
     }
 }
 
-@Preview
-@Composable
-fun preview(){
-    val a = Animal(1, "hola", "visible")
-    val viewModel: AnimalRazaUserViewModel = viewModel()
-    tarjeta(a, viewModel)
-}

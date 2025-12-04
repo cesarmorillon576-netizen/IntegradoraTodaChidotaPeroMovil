@@ -28,7 +28,7 @@ class AnimalRazaUserViewModel: ViewModel() {
 
     suspend fun modificarRaza(raza: Raza): Boolean {
         return try{
-            RetroFitClient.api.actualizarRaza(raza.nombre, raza.id_animal)
+            RetroFitClient.api.actualizarRaza(raza.id_raza,raza.nombre, raza.id_animal)
             cargarRazas()
             true
         }catch(e: Exception){

@@ -22,7 +22,11 @@ import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 
 @Composable
-fun pantallaRaza(navController: NavController, viewModel: AnimalRazaUserViewModel){
+fun pantallaRaza(
+    navController: NavController,
+    viewModel: AnimalRazaUserViewModel,
+    abrirEditar: (Raza?, Animal?) -> Unit
+){
     LaunchedEffect(Unit) {
         viewModel.cargarRazas()
     }
@@ -40,7 +44,7 @@ fun pantallaRaza(navController: NavController, viewModel: AnimalRazaUserViewMode
             items(razas, key = {it.id_raza}){ r ->
                 for(a in animales) {
                     if(r.id_animal == a.id_animal)
-                        tarjeta(r, a, viewModel)
+                        tarjeta(r, a, viewModel, abrirEditar = abrirEditar)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
             }

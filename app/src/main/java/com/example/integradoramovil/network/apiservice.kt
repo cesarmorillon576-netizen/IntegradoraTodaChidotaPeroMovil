@@ -31,8 +31,9 @@ interface apiservice {
 
 
     @FormUrlEncoded
-    @PUT("raza")
+    @PUT("raza/{id}")
     suspend fun actualizarRaza(
+        @Path("id") id_raza: Int,
         @Field("nombre") nombre: String,
         @Field("id_animal") id_animal: Int?
     )
