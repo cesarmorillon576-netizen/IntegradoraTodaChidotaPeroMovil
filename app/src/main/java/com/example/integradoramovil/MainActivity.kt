@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -42,6 +43,7 @@ import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.pantallas.*
 import com.example.integradoramovil.ui.theme.Background
 import com.example.integradoramovil.ui.theme.IntegradoraMovilTheme
+import com.example.integradoramovil.ui.theme.buttonColor
 import com.example.integradoramovil.ui.theme.textColor
 import com.example.integradoramovil.ui.theme.textColorsubMain
 import com.example.integradoramovil.ui.theme.textOrange
@@ -163,7 +165,8 @@ class MainActivity : ComponentActivity() {
                             },
                             icon = {},
                             label = {
-                                Text("Animales")
+                                Text("Animales",
+                                    fontSize = 25.sp)
                             },
                             colors = NavigationBarItemDefaults.colors(
                                 indicatorColor = textOrange,
@@ -179,7 +182,8 @@ class MainActivity : ComponentActivity() {
                             },
                             icon = {},
                             label = {
-                                Text("Razas")
+                                Text("Razas",
+                                    fontSize = 30.sp)
                             },
                             colors = NavigationBarItemDefaults.colors(
                                 indicatorColor = textOrange,
@@ -194,7 +198,7 @@ class MainActivity : ComponentActivity() {
             floatingActionButton = {
                 if(barras && (rutaActual == "animales" || rutaActual == "razas")){
                     FloatingActionButton(
-                        containerColor = textColorsubMain,
+                        containerColor = buttonColor,
                         onClick = {
                             if(rutaActual == "animales"){
                                 abrirModal(null)

@@ -13,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +25,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.integradoramovil.R
 import com.example.integradoramovil.modelos.Raza
+import com.example.integradoramovil.ui.theme.Background
+import com.example.integradoramovil.ui.theme.BackgroundCard2
+import com.example.integradoramovil.ui.theme.redText
 import com.example.integradoramovil.ui.theme.textColor
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 
@@ -45,11 +49,12 @@ fun modal(
 
     AlertDialog(
         onDismissRequest = onDismissRequest,
+        containerColor = Background,
 
         icon = {
             Icon(
                 painter = painterResource(R.drawable.agregar),
-                //tint = textColor,
+                tint = redText,
                 contentDescription = "Agregar"
             )
         },
@@ -59,11 +64,16 @@ fun modal(
                 "Agregar raza"
             }else{
                 "Agregar animal"
-            }
+            },
+            color = redText
             )},
         text = {
             Column {
                 TextField(
+                    colors = TextFieldDefaults.colors(
+                        unfocusedContainerColor = BackgroundCard2,
+
+                    ),
                     value = nombre,
                     onValueChange = { nombre = it },
                     label = {
