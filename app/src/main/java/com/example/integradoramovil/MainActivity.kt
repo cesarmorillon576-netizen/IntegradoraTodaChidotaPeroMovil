@@ -38,6 +38,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.integradoramovil.componentes.modal
+import com.example.integradoramovil.componentes.modaleditar
 import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.pantallas.*
@@ -66,15 +67,24 @@ class MainActivity : ComponentActivity() {
                 Box(
                     modifier = Modifier.fillMaxSize().statusBarsPadding().imePadding()
                 ){
-                    MAIN(viewModel,
-                        mostrarModal = mostrarModal,
-                        abrirModal = { laRaza ->
+                    MAIN(
+                        viewModel,
+                        mostrarModalAgregar = mostrarModal,
+                        mostrarModalEditar =  mostrarModalEditar,
+                        abrirModalAgregar = { laRaza ->
                             razaSeleccionada = laRaza
                             animalSeleccionado = null
                             mostrarModal = true
-                                     },
-
-                        cerrarModal = {mostrarModal = false}
+                                            },
+                        abrirModalEditar = { laRaza: Raza?, animall: Animal? ->
+                            razaSeleccionada = laRaza
+                            animalSeleccionado = animall
+                            mostrarModalEditar = true
+                        },
+                        cerrarModal = {
+                            mostrarModal = false
+                            mostrarModalEditar = false
+                        }
                     )
 
                     if(mostrarModal){
@@ -112,6 +122,32 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
+
+                    if(mostrarModalEditar){
+                        modaleditar(
+                            onDismissRequest = {
+                                mostrarModalEditar = false
+                            },
+                            raza = razaSeleccionada,
+                            viewModel = viewModel,
+                            onConfirmation = { nombre, idAnimal ->
+                                viewModel.viewModelScope.launch {
+                                    if(razaSeleccionada != null){
+                                        viewModel.modificarRaza(
+                                            razaSeleccionada!!.copy(nombre = nombre, id_animal = idAnimal!!)
+                                        )
+                                    }else animalSeleccionado?.let {
+                                        viewModel.modificarAnimal(
+                                            it.copy(nombre = nombre)
+                                        )
+                                    }
+                                }
+                                mostrarModalEditar = false
+                            }
+                        )
+
+                    }
+
                 }
             }
         }
@@ -122,17 +158,18 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MAIN(
         viewModel: AnimalRazaUserViewModel,
-        mostrarModal: Boolean, abrirModal: (Raza?) -> Unit,
+        mostrarModalAgregar: Boolean,
+        mostrarModalEditar: Boolean,
+        abrirModalAgregar: (Raza?) -> Unit,
+        abrirModalEditar: (Raza?, Animal?) -> Unit,
         cerrarModal: () -> Unit
-
     ) {
 
         val navController = rememberNavController()
         val navBackStack = navController.currentBackStackEntryAsState()
         val rutaActual = navBackStack.value?.destination?.route
-
         val barras = rutaActual != "loginfirst" && rutaActual != "loginsecond"
-        Log.e( "estado", "${barras}")
+
         Scaffold(
             topBar = {
                 if(barras){
@@ -201,9 +238,9 @@ class MainActivity : ComponentActivity() {
                         containerColor = buttonColor,
                         onClick = {
                             if(rutaActual == "animales"){
-                                abrirModal(null)
+                                abrirModalAgregar(null)
                             }else{
-                                abrirModal(
+                                abrirModalAgregar(
                                     Raza(
                                         0,"","visible",0, ""
                                     )
@@ -225,23 +262,13 @@ class MainActivity : ComponentActivity() {
                 navController = navController,
                 startDestination = "loginfirst",
             ){
-                composable("loginfirst"){
-                    loginFirst(navController)
-                }
+                composable("loginfirst"){ loginFirst(navController) }
 
-                composable("loginsecond") {
-                    LoginSecond(navController)
-                }
+                composable("loginsecond") { LoginSecond(navController) }
 
-                composable("razas"){
-                    pantallaRaza(navController, viewModel)
-                }
+                composable("razas"){ pantallaRaza(navController, viewModel, abrirEditar = abrirModalEditar) }
 
-                composable("animales"){
-                    pantallaAnimal(navController, viewModel)
-                }
-
-
+                composable("animales"){ pantallaAnimal(navController, viewModel, abrirEditar = abrirModalEditar) }
 
             }
         }
