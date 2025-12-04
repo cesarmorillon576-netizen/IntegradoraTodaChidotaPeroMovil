@@ -14,10 +14,10 @@ data class User(
 )
 
 data class Raza(
-    val id_raza: Int ,
-    val nombre: String ,
-    val visibilidad: String ,
-    val id_animal: Int,
+    val id_raza: Int,
+    val nombre: String,
+    val visibilidad: String,
+    val id_animal: Int?,
     val animal: String
 )
 
@@ -27,3 +27,7 @@ data class Animal(
     val visibilidad: String
 )
 
+data class RazaRequest(
+    val nombre: String,
+    val id_animal: Int?
+)

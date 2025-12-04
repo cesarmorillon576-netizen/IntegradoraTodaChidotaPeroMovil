@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.modelos.Raza
+import com.example.integradoramovil.modelos.RazaRequest
 import com.example.integradoramovil.network.RetroFitClient
 
 class AnimalRazaUserViewModel: ViewModel() {
@@ -17,6 +18,7 @@ class AnimalRazaUserViewModel: ViewModel() {
         return try {
             val res = RetroFitClient.api.obtenerRazas()
             razas.value = res
+            println(res)
             true
         } catch(e: Exception) {
             println(e.message)
@@ -48,7 +50,9 @@ class AnimalRazaUserViewModel: ViewModel() {
 
     suspend fun crearRazas(raza: Raza): Boolean{
         return try {
-            RetroFitClient.api.crearRaza(raza.nombre, raza.id_animal)
+            val nuevaRaza = RazaRequest(raza.nombre, raza.id_animal)
+            val res = RetroFitClient.api.crearRaza(nuevaRaza)
+            println(res)
             cargarRazas()
             true
         }catch(e: Exception){
