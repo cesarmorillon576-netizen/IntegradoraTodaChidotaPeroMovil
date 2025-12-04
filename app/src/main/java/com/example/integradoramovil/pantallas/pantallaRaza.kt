@@ -37,7 +37,7 @@ fun pantallaRaza(navController: NavController, viewModel: AnimalRazaUserViewMode
         ) {
             items(razas, key = {it.id_raza}){ r ->
                 for(a in animales) {
-                    if(r.id_raza == a.id_animal)
+                    if(r.id_animal == a.id_animal)
                         tarjeta(r, a, viewModel)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
