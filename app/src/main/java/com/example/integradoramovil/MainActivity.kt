@@ -12,10 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -39,8 +42,12 @@ import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.pantallas.*
 import com.example.integradoramovil.ui.theme.Background
 import com.example.integradoramovil.ui.theme.IntegradoraMovilTheme
+import com.example.integradoramovil.ui.theme.textColor
+import com.example.integradoramovil.ui.theme.textColorsubMain
+import com.example.integradoramovil.ui.theme.textOrange
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.selects.select
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,18 +132,20 @@ class MainActivity : ComponentActivity() {
                                     "razas" -> "Razas"
                                     else -> ""
                                 },
-                                color = MaterialTheme.colorScheme.onBackground
+                                color = textColor
                             )
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = Background
+                            containerColor = textColorsubMain
                         )
                     )
                 }
             },
             bottomBar = {
                 if(barras){
-                    NavigationBar {
+                    NavigationBar(
+                        containerColor = textColorsubMain
+                    ) {
                         NavigationBarItem(
                             selected = rutaActual == "animales",
                             onClick = {
@@ -145,7 +154,12 @@ class MainActivity : ComponentActivity() {
                             icon = {},
                             label = {
                                 Text("Animales")
-                            }
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                indicatorColor = textOrange,
+                                selectedTextColor =  textOrange,
+                                unselectedTextColor = textColor
+                            ),
                         )
 
                         NavigationBarItem(
@@ -156,7 +170,12 @@ class MainActivity : ComponentActivity() {
                             icon = {},
                             label = {
                                 Text("Razas")
-                            }
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                indicatorColor = textOrange,
+                                selectedTextColor =  textOrange,
+                                unselectedTextColor = textColor
+                            )
                         )
 
                     }
@@ -165,6 +184,7 @@ class MainActivity : ComponentActivity() {
             floatingActionButton = {
                 if(barras && (rutaActual == "animales" || rutaActual == "razas")){
                     FloatingActionButton(
+                        containerColor = textColorsubMain,
                         onClick = {
                             if(rutaActual == "animales"){
                                 abrirModal(null)
@@ -179,6 +199,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         Icon(
                             painter = painterResource(id = com.example.integradoramovil.R.drawable.agregar),
+                            tint = textColor,
                             contentDescription = "agregar"
                         )
                     }

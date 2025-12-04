@@ -37,7 +37,7 @@ class AnimalRazaUserViewModel: ViewModel() {
         }
     }
 
-    suspend fun eliminarRazr(raza: Raza): Boolean{
+    suspend fun eliminarRaza(raza: Raza): Boolean{
         return try {
             RetroFitClient.api.eliminarRaza(raza.id_raza)
             cargarAnimales()

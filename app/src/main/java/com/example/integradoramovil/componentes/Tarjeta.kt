@@ -28,6 +28,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.ui.theme.BackgroundCard
+import com.example.integradoramovil.ui.theme.BackgroundCard2
+import com.example.integradoramovil.ui.theme.redText
+import com.example.integradoramovil.ui.theme.textColor
+import com.example.integradoramovil.ui.theme.textOrange
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 import kotlinx.coroutines.launch
 
@@ -38,7 +42,8 @@ fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
     Card (
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onBackground
+            containerColor = if(raza.visibilidad == "visible") BackgroundCard2
+            else BackgroundCard
         )
     ){
         Row (
@@ -86,7 +91,7 @@ fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
                     onClick = {
                         viewModel.viewModelScope.launch {
                             println("click en eliminar")
-                            viewModel.eliminarRazr(raza)
+                            viewModel.eliminarRaza(raza)
                         }
                     }
                 ) {
@@ -107,7 +112,8 @@ fun tarjeta(animal: Animal, viewModel: AnimalRazaUserViewModel){
     Card (
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onBackground
+            containerColor = if(animal.visibilidad == "visible") BackgroundCard2
+            else BackgroundCard
         )
     ){
         LazyRow (
@@ -116,8 +122,14 @@ fun tarjeta(animal: Animal, viewModel: AnimalRazaUserViewModel){
         ){
             items(1){
                 Column{
-                    Text("Nombre: ${animal.nombre}")
-                    Text("Estado: ${animal.visibilidad}")
+                    Text("Nombre: ${animal.nombre}",
+                        color = if(animal.visibilidad == "visible") redText
+                        else textColor
+                    )
+                    Text("Estado: ${animal.visibilidad}",
+                        color = if(animal.visibilidad == "visible") redText
+                        else textColor
+                    )
 
                     Row{
                         // Editar

@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.integradoramovil.R
 import com.example.integradoramovil.modelos.Raza
+import com.example.integradoramovil.ui.theme.textColor
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 
 // modal agregar
@@ -48,6 +49,7 @@ fun modal(
         icon = {
             Icon(
                 painter = painterResource(R.drawable.agregar),
+                //tint = textColor,
                 contentDescription = "Agregar"
             )
         },
