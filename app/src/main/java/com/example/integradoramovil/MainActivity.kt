@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
                 var animalSeleccionado by remember {mutableStateOf<Animal?>(null)}
 
                 Box(
-                    modifier = Modifier.fillMaxSize().statusBarsPadding().imePadding()
+                    modifier = Modifier.fillMaxSize().imePadding()
                 ){
                     MAIN(
                         viewModel,
@@ -181,7 +181,8 @@ class MainActivity : ComponentActivity() {
                                     "razas" -> "Razas"
                                     else -> ""
                                 },
-                                color = textColor
+                                color = textColor,
+                                fontSize = 35.sp
                             )
                         },
                         colors = TopAppBarDefaults.topAppBarColors(

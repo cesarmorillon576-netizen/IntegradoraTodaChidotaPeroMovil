@@ -11,9 +11,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.integradoramovil.R
 import com.example.integradoramovil.modelos.*
+import com.example.integradoramovil.ui.theme.BackgroundCard2
+import com.example.integradoramovil.ui.theme.dropDownBackground
+import com.example.integradoramovil.ui.theme.redText
+import com.example.integradoramovil.ui.theme.textColor
+import com.example.integradoramovil.ui.theme.textColorsubMain
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 import com.google.android.material.behavior.SwipeDismissBehavior
 
@@ -37,6 +43,7 @@ fun modaleditar(
         icon = {
             Icon(
                 painter = painterResource(R.drawable.agregar),
+                tint = redText,
                 contentDescription = if (raza != null) "Editar raza" else "Editar animal"
             )
         },
@@ -46,18 +53,38 @@ fun modaleditar(
                 TextField(
                     value = nombre,
                     onValueChange = { nombre = it },
-                    label = { Text(if (raza == null) "Nombre del animal" else "Nombre de la raza") }
+                    colors = TextFieldDefaults.colors(
+                        unfocusedContainerColor = BackgroundCard2,
+                        focusedContainerColor = BackgroundCard2,
+                        cursorColor = redText,
+                        focusedIndicatorColor = redText
+                    ),
+                    textStyle = TextStyle(
+                        color = textColorsubMain
+                    ),
+                    label = { Text( color = redText, text = if (raza == null) "Nombre del animal"
+                    else "Nombre de la raza") }
                 )
 
                 if (raza != null) {
                     Spacer(modifier = Modifier.padding(8.dp))
-                    Text("Animal asociado:")
+                    Text("Animal asociado:",
+                        color = redText)
 
                     ExposedDropdownMenuBox(
                         expanded = expanded,
                         onExpandedChange = { expanded = !expanded }
                     ) {
                         TextField(
+                            colors = TextFieldDefaults.colors(
+                                unfocusedContainerColor = dropDownBackground,
+                                focusedContainerColor = dropDownBackground,
+                                cursorColor = textColor,
+                                focusedIndicatorColor = textColor
+                            ),
+                            textStyle = TextStyle(
+                                color = textColor
+                            ),
                             value = animalSeleccionado,
                             onValueChange = {},
                             readOnly = true,
@@ -89,10 +116,12 @@ fun modaleditar(
                     if (raza != null && idAnimalSeleccionado == null) return@TextButton
                     onConfirmation(nombre, idAnimalSeleccionado)
                 }
-            ) { Text("Guardar") }
+            ) { Text("Guardar",
+                color = redText) }
         },
         dismissButton = {
-            TextButton(onClick = onDismissRequest) { Text("Cancelar") }
+            TextButton(onClick = onDismissRequest) { Text("Cancelar",
+                color = redText) }
         }
     )
 }

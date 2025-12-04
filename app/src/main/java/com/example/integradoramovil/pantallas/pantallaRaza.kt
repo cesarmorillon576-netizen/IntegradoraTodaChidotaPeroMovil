@@ -1,5 +1,6 @@
 package com.example.integradoramovil.pantallas
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,7 @@ import androidx.navigation.NavController
 import com.example.integradoramovil.componentes.tarjeta
 import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.modelos.Raza
+import com.example.integradoramovil.ui.theme.Background
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 
 @Composable
@@ -37,6 +39,7 @@ fun pantallaRaza(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(Background)
     ){
         LazyColumn(
             modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)

@@ -1,6 +1,7 @@
 package com.example.integradoramovil.componentes
 
 import android.R
+import android.R.id.bold
 import android.widget.Space
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
@@ -29,6 +34,7 @@ import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.ui.theme.BackgroundCard
 import com.example.integradoramovil.ui.theme.BackgroundCard2
+import com.example.integradoramovil.ui.theme.dropDownBackground
 import com.example.integradoramovil.ui.theme.redText
 import com.example.integradoramovil.ui.theme.textColor
 import com.example.integradoramovil.ui.theme.textOrange
@@ -57,15 +63,55 @@ fun tarjeta(
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Column {
-                Text("Nombre: ${raza.nombre}",
-                    color = if(raza.visibilidad == "visible") redText
-                    else textColor)
-                Text("Estado: ${raza.visibilidad}",
-                    color = if(raza.visibilidad == "visible") redText
-                    else textColor)
-                Text("Animal: ${animal.nombre}",
-                    color = if(raza.visibilidad == "visible") redText
-                    else textColor)
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(
+                            color = if(raza.visibilidad == "visible") dropDownBackground
+                            else BackgroundCard2,
+                            fontWeight = FontWeight.Bold)) {
+                            append("Nombre: ")
+                        }
+
+                        withStyle(style = SpanStyle(
+                            color = if(raza.visibilidad == "visible") redText
+                            else BackgroundCard)) {
+                            append(raza.nombre)
+                        }
+                    }
+                )
+
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(
+                            color = if(raza.visibilidad == "visible") dropDownBackground
+                            else BackgroundCard2,
+                            fontWeight = FontWeight.Bold)) {
+                            append("Estado: ")
+                        }
+
+                        withStyle(style = SpanStyle(
+                            color = if(raza.visibilidad == "visible") redText
+                            else BackgroundCard)) {
+                            append(raza.visibilidad)
+                        }
+                    }
+                )
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(
+                            color = if(raza.visibilidad == "visible") dropDownBackground
+                            else BackgroundCard2,
+                            fontWeight = FontWeight.Bold)) {
+                            append("Animal: ")
+                        }
+
+                        withStyle(style = SpanStyle(
+                            color = if(raza.visibilidad == "visible") redText
+                            else BackgroundCard)) {
+                            append(animal.nombre)
+                        }
+                    }
+                )
             }
 
             Row{
@@ -141,13 +187,37 @@ fun tarjeta(
         ){
             items(1){
                 Column{
-                    Text("Nombre: ${animal.nombre}",
-                        color = if(animal.visibilidad == "visible") redText
-                        else textColor
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(
+                                color = if(animal.visibilidad == "visible") dropDownBackground
+                                else BackgroundCard2,
+                                fontWeight = FontWeight.Bold)) {
+                                append("Nombre: ")
+                            }
+
+                            withStyle(style = SpanStyle(
+                                color = if(animal.visibilidad == "visible") redText
+                                else BackgroundCard)) {
+                                append(animal.nombre)
+                            }
+                        }
                     )
-                    Text("Estado: ${animal.visibilidad}",
-                        color = if(animal.visibilidad == "visible") redText
-                        else textColor
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(style = SpanStyle(
+                                color = if(animal.visibilidad == "visible") dropDownBackground
+                                else BackgroundCard2,
+                                fontWeight = FontWeight.Bold)) {
+                                append("Estado: ")
+                            }
+
+                            withStyle(style = SpanStyle(
+                                color = if(animal.visibilidad == "visible") redText
+                                else BackgroundCard)) {
+                                append(animal.visibilidad)
+                            }
+                        }
                     )
 
                     Row{
