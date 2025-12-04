@@ -52,9 +52,15 @@ fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Column {
-                Text("Nombre: ${raza.nombre}")
-                Text("Estado: ${raza.visibilidad}")
-                Text("Animal: ${animal.nombre}")
+                Text("Nombre: ${raza.nombre}",
+                    color = if(raza.visibilidad == "visible") redText
+                    else textColor)
+                Text("Estado: ${raza.visibilidad}",
+                    color = if(raza.visibilidad == "visible") redText
+                    else textColor)
+                Text("Animal: ${animal.nombre}",
+                    color = if(raza.visibilidad == "visible") redText
+                    else textColor)
             }
 
             Row{
@@ -68,7 +74,9 @@ fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
                 ) {
                     Icon(
                         painter = painterResource(id = com.example.integradoramovil.R.drawable.editar),
-                        contentDescription = "Editar"
+                        contentDescription = "Editar",
+                        tint = if(raza.visibilidad == "invisible") textColor
+                        else Color.Black
                     )
                 }
 
@@ -82,7 +90,9 @@ fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
                 ) {
                     Icon(
                         painter = painterResource(id = com.example.integradoramovil.R.drawable.cambiar_estado),
-                        contentDescription = "Editar"
+                        contentDescription = "Editar",
+                        tint = if(raza.visibilidad == "invisible") textColor
+                        else Color.Black
                     )
                 }
 
@@ -97,7 +107,9 @@ fun tarjeta(raza: Raza, animal: Animal, viewModel: AnimalRazaUserViewModel) {
                 ) {
                     Icon(
                         painter = painterResource(id = com.example.integradoramovil.R.drawable.borrar),
-                        contentDescription = "Editar"
+                        contentDescription = "Editar",
+                        tint = if(raza.visibilidad == "invisible") textColor
+                        else Color.Black
                     )
                 }
             }
@@ -140,7 +152,9 @@ fun tarjeta(animal: Animal, viewModel: AnimalRazaUserViewModel){
                         ) {
                             Icon(
                                 painter = painterResource(id = com.example.integradoramovil.R.drawable.editar),
-                                contentDescription = "Editar"
+                                contentDescription = "Editar",
+                                tint = if(animal.visibilidad == "invisible") textColor
+                                else Color.Black
                             )
                         }
 
@@ -154,7 +168,9 @@ fun tarjeta(animal: Animal, viewModel: AnimalRazaUserViewModel){
                         ) {
                             Icon(
                                 painter = painterResource(id = com.example.integradoramovil.R.drawable.cambiar_estado),
-                                contentDescription = "Cambiar estado"
+                                contentDescription = "Cambiar estado",
+                                tint = if(animal.visibilidad == "invisible") textColor
+                                else Color.Black
                             )
                         }
 
@@ -169,7 +185,9 @@ fun tarjeta(animal: Animal, viewModel: AnimalRazaUserViewModel){
                         ) {
                             Icon(
                                 painter = painterResource(id = com.example.integradoramovil.R.drawable.borrar),
-                                contentDescription = "Borrar"
+                                contentDescription = "Borrar",
+                                tint = if(animal.visibilidad == "invisible") textColor
+                                else Color.Black
                             )
                         }
 
