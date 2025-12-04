@@ -40,7 +40,7 @@ class AnimalRazaUserViewModel: ViewModel() {
     suspend fun eliminarRaza(raza: Raza): Boolean{
         return try {
             RetroFitClient.api.eliminarRaza(raza.id_raza)
-            cargarAnimales()
+            cargarRazas()
             true
         }catch (e: Exception){
             println(e.message)
@@ -64,6 +64,7 @@ class AnimalRazaUserViewModel: ViewModel() {
     suspend fun cambiarEstado(raza: Raza): Boolean{
         return try{
             RetroFitClient.api.cambiarEstadoRaza(raza.id_raza)
+            cargarRazas()
             true
         }catch(e: Exception){
             println(e.message)
@@ -124,6 +125,7 @@ class AnimalRazaUserViewModel: ViewModel() {
     suspend fun cambiarEstado(animal: Animal): Boolean{
         return try{
             RetroFitClient.api.cambiarEstadoAnimal(animal.id_animal)
+            cargarAnimales()
             true
         }catch(e: Exception){
             println(e.message)

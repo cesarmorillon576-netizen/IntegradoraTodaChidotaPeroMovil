@@ -15,6 +15,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.integradoramovil.R
 import com.example.integradoramovil.modelos.*
+import com.example.integradoramovil.ui.theme.Background
 import com.example.integradoramovil.ui.theme.BackgroundCard2
 import com.example.integradoramovil.ui.theme.dropDownBackground
 import com.example.integradoramovil.ui.theme.redText
@@ -37,9 +38,9 @@ fun modaleditar(
     var expanded by remember {mutableStateOf(false)}
     var animalSeleccionado by remember {mutableStateOf(animal?.nombre ?: "Selecciona un animal")}
     var idAnimalSeleccionado by remember {mutableStateOf<Int?>(raza?.id_animal ?: null)}
-
     AlertDialog(
         onDismissRequest = onDismissRequest,
+        containerColor = Background,
         icon = {
             Icon(
                 painter = painterResource(R.drawable.agregar),
@@ -47,12 +48,23 @@ fun modaleditar(
                 contentDescription = if (raza != null) "Editar raza" else "Editar animal"
             )
         },
-        title = { Text(if (raza != null) "Editar raza" else "Editar animal") },
+        title = {
+            Text(if (raza != null) {
+                "Editar raza"
+            }else {
+                "Editar animal"
+            },
+                color = redText
+            ) },
         text = {
             Column {
                 TextField(
                     value = nombre,
-                    onValueChange = { nombre = it },
+                    onValueChange = {
+                        nombre = it.filter {
+                            it.isLetter() || it.isWhitespace()
+                        }
+                                    },
                     colors = TextFieldDefaults.colors(
                         unfocusedContainerColor = BackgroundCard2,
                         focusedContainerColor = BackgroundCard2,
@@ -63,7 +75,7 @@ fun modaleditar(
                         color = textColorsubMain
                     ),
                     label = { Text( color = redText, text = if (raza == null) "Nombre del animal"
-                    else "Nombre de la raza") }
+                    else "Nombre de la raza") },
                 )
 
                 if (raza != null) {

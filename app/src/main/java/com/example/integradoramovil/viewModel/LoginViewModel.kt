@@ -91,7 +91,7 @@ object LoginViewModel : ViewModel() {
                         IsText="La contraseña o el numero/o correo son incorrectos"
                     }
                 } else {
-                    IsText="La contraseña o le numero/o correo son incorrectos"
+                    IsText="La contraseña o el numero/o correo son incorrectos"
                     Log.e("response", "Error: ${response.errorBody()?.string()}")
                 }
             } catch (e: Exception) {

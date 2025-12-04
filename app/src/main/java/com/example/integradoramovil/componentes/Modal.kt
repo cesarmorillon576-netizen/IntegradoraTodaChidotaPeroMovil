@@ -86,7 +86,11 @@ fun modal(
                         color = textColorsubMain
                     ),
                     value = nombre,
-                    onValueChange = { nombre = it },
+                    onValueChange = {
+                        nombre = it.filter {
+                            it.isLetter() || it.isWhitespace()
+                        }
+                                    },
                     label = {
                         if(raza == null){
                             Text("Nombre del animal",
@@ -153,7 +157,10 @@ fun modal(
         confirmButton = {
             TextButton(
                 onClick = {
-                    if(raza != null && idAnimalSeleccionado == null){
+                    if(raza != null && idAnimalSeleccionado == null ){
+                        return@TextButton
+                    }
+                    if(nombre.isEmpty() || nombre.isBlank()){
                         return@TextButton
                     }
                     onConfirmation(nombre, idAnimalSeleccionado)
@@ -174,8 +181,3 @@ fun modal(
     )
 }
 
-@Preview
-@Composable
-fun la_preview(){
-
-}

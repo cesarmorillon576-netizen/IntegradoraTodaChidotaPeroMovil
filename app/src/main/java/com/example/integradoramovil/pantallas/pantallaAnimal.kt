@@ -55,7 +55,6 @@ fun pantallaAnimal(
             items(animales, key = {it.id_animal}){ a ->
                 tarjeta(a, viewModel, abrirEditar)
                 Spacer(modifier = Modifier.height(10.dp))
-
             }
         }
     }

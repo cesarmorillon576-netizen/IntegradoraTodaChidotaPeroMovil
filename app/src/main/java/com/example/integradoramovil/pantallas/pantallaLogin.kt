@@ -123,10 +123,11 @@ fun loginFirst( navController: NavController){
                 1.dp,0.dp
             ))
             Image(
-                painter = painterResource(R.drawable.garra),
+                painter = painterResource(R.drawable.huella),
                 contentDescription = "Garra",
                 modifier = Modifier
-                    .size(150.dp)
+                    .size(170.dp)
+                    .rotate(60f)
                     .clickable {
                         navController.navigate("loginSecond")
                     }

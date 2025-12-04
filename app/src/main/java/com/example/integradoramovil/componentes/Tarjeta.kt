@@ -135,6 +135,7 @@ fun tarjeta(
                     onClick = {
                         viewModel.viewModelScope.launch {
                             viewModel.cambiarEstado(raza)
+
                         }
                     }
                 ) {
