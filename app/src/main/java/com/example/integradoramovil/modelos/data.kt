@@ -27,3 +27,7 @@ data class Animal(
     val visibilidad: String
 )
 
+data class RazaRequest(
+    val nombre: String,
+    val id_animal: Int
+)

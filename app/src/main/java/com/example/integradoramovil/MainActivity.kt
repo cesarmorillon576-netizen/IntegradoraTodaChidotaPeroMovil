@@ -95,9 +95,9 @@ class MainActivity : ComponentActivity() {
                                         viewModel.crearRazas(
                                             Raza(
                                                 0,
-                                                "",
-                                                "",
-                                                0,
+                                                nombre = nombre,
+                                                "visible",
+                                                id_animal = idAnimal,
                                                 ""
                                             )
                                         )

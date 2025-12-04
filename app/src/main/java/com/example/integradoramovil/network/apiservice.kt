@@ -3,6 +3,7 @@ package com.example.integradoramovil.network
 import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.modelos.LoginResponse
 import com.example.integradoramovil.modelos.Raza
+import com.example.integradoramovil.modelos.RazaRequest
 import retrofit2.Response
 import retrofit2.http.*
 import retrofit2.http.GET
@@ -22,11 +23,9 @@ interface apiservice {
     @GET("raza")
     suspend fun obtenerRazas(): List<Raza>
 
-    @FormUrlEncoded
     @POST("raza")
     suspend fun crearRaza(
-        @Field("nombre") nombre: String,
-        @Field("id_animal") id_animal: Int
+        @Body raza: RazaRequest
     )
 
 
@@ -36,7 +35,7 @@ interface apiservice {
     suspend fun actualizarRaza(
         @Field("nombre") nombre: String,
         @Field("id_animal") id_animal: Int
-    ): Raza
+    )
 
     @FormUrlEncoded
     @DELETE("raza")
