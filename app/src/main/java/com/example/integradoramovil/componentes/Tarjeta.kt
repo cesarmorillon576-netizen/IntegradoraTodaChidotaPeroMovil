@@ -1,14 +1,12 @@
 package com.example.integradoramovil.componentes
 
-import android.R
-import android.R.id.bold
-import android.widget.Space
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -133,10 +131,7 @@ fun tarjeta(
                 // Cambiar estado
                 IconButton(
                     onClick = {
-                        viewModel.viewModelScope.launch {
-                            viewModel.cambiarEstado(raza)
-
-                        }
+                        viewModel.cambiarEstado(null, raza)
                     }
                 ) {
                     Icon(
@@ -150,10 +145,7 @@ fun tarjeta(
                 // Eliminar
                 IconButton(
                     onClick = {
-                        viewModel.viewModelScope.launch {
-                            println("click en eliminar")
-                            viewModel.eliminarRaza(raza)
-                        }
+                        viewModel.eliminarRaza(raza)
                     }
                 ) {
                     Icon(
@@ -240,9 +232,7 @@ fun tarjeta(
                         // Cambiar estado
                         IconButton(
                             onClick = {
-                                viewModel.viewModelScope.launch {
-                                    viewModel.cambiarEstado(animal)
-                                }
+                                viewModel.cambiarEstado(animal, null)
                             }
                         ) {
                             Icon(
@@ -256,10 +246,7 @@ fun tarjeta(
                         // Eliminar
                         IconButton(
                             onClick = {
-                                viewModel.viewModelScope.launch {
-                                    println("click en eliminar")
-                                    viewModel.eliminarAnimal(animal)
-                                }
+                                viewModel.eliminarAnimal(animal)
                             }
                         ) {
                             Icon(

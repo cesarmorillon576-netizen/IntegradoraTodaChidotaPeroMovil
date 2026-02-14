@@ -60,22 +60,24 @@ class MainActivity : ComponentActivity() {
             IntegradoraMovilTheme {
                 val viewModel: AnimalRazaUserViewModel = viewModel()
                 var mostrarModal by remember { mutableStateOf(false) }
-                var mostrarModalEditar by remember {mutableStateOf(false)}
-                var razaSeleccionada by remember {mutableStateOf<Raza?>(null)}
-                var animalSeleccionado by remember {mutableStateOf<Animal?>(null)}
+                var mostrarModalEditar by remember { mutableStateOf(false) }
+                var razaSeleccionada by remember { mutableStateOf<Raza?>(null) }
+                var animalSeleccionado by remember { mutableStateOf<Animal?>(null) }
 
                 Box(
-                    modifier = Modifier.fillMaxSize().imePadding()
-                ){
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .imePadding()
+                ) {
                     MAIN(
                         viewModel,
                         mostrarModalAgregar = mostrarModal,
-                        mostrarModalEditar =  mostrarModalEditar,
+                        mostrarModalEditar = mostrarModalEditar,
                         abrirModalAgregar = { laRaza ->
                             razaSeleccionada = laRaza
                             animalSeleccionado = null
                             mostrarModal = true
-                                            },
+                        },
                         abrirModalEditar = { laRaza: Raza?, animall: Animal? ->
                             razaSeleccionada = laRaza
                             animalSeleccionado = animall
@@ -87,7 +89,7 @@ class MainActivity : ComponentActivity() {
                         }
                     )
 
-                    if(mostrarModal){
+                    if (mostrarModal) {
                         modal(
                             onDismissRequest = {
                                 mostrarModal = false
@@ -95,35 +97,31 @@ class MainActivity : ComponentActivity() {
                             raza = razaSeleccionada,
                             viewModel = viewModel,
                             onConfirmation = { nombre, idAnimal ->
-                                if(razaSeleccionada == null){
-                                    viewModel.viewModelScope.launch{
-                                        viewModel.crearAnimal(
-                                            Animal(
-                                                id_animal = 0,
-                                                nombre = nombre,
-                                                visibilidad = "visible"
-                                            )
+                                if (razaSeleccionada == null) {
+                                    viewModel.crearAnimal(
+                                        Animal(
+                                            id_animal = 0,
+                                            nombre = nombre,
+                                            visibilidad = "visible"
                                         )
-                                    }
-                                }else{
-                                    viewModel.viewModelScope.launch {
-                                        viewModel.crearRazas(
-                                            Raza(
-                                                0,
-                                                nombre = nombre,
-                                                "visible",
-                                                id_animal = idAnimal,
-                                                ""
-                                            )
+                                    )
+                                } else {
+                                    viewModel.crearRazas(
+                                        Raza(
+                                            0,
+                                            nombre = nombre,
+                                            "visible",
+                                            id_animal = idAnimal,
+                                            ""
                                         )
-                                    }
+                                    )
                                 }
                                 mostrarModal = false
                             }
                         )
                     }
 
-                    if(mostrarModalEditar){
+                    if (mostrarModalEditar) {
                         modaleditar(
                             onDismissRequest = {
                                 mostrarModalEditar = false
@@ -131,16 +129,18 @@ class MainActivity : ComponentActivity() {
                             raza = razaSeleccionada,
                             viewModel = viewModel,
                             onConfirmation = { nombre, idAnimal ->
-                                viewModel.viewModelScope.launch {
-                                    if(razaSeleccionada != null){
-                                        viewModel.modificarRaza(
-                                            razaSeleccionada!!.copy(nombre = nombre, id_animal = idAnimal!!)
+
+                                if (razaSeleccionada != null) {
+                                    viewModel.modificarRaza(
+                                        razaSeleccionada!!.copy(
+                                            nombre = nombre,
+                                            id_animal = idAnimal!!
                                         )
-                                    }else animalSeleccionado?.let {
-                                        viewModel.modificarAnimal(
-                                            it.copy(nombre = nombre)
-                                        )
-                                    }
+                                    )
+                                } else animalSeleccionado?.let {
+                                    viewModel.modificarAnimal(
+                                        it.copy(nombre = nombre)
+                                    )
                                 }
                                 mostrarModalEditar = false
                             }
@@ -172,11 +172,11 @@ class MainActivity : ComponentActivity() {
 
         Scaffold(
             topBar = {
-                if(barras){
+                if (barras) {
                     TopAppBar(
                         title = {
                             Text(
-                                when(rutaActual){
+                                when (rutaActual) {
                                     "animales" -> "Animales"
                                     "razas" -> "Razas"
                                     else -> ""
@@ -192,7 +192,7 @@ class MainActivity : ComponentActivity() {
                 }
             },
             bottomBar = {
-                if(barras){
+                if (barras) {
                     NavigationBar(
                         containerColor = textColorsubMain
                     ) {
@@ -203,12 +203,14 @@ class MainActivity : ComponentActivity() {
                             },
                             icon = {},
                             label = {
-                                Text("Animales",
-                                    fontSize = 25.sp)
+                                Text(
+                                    "Animales",
+                                    fontSize = 25.sp
+                                )
                             },
                             colors = NavigationBarItemDefaults.colors(
                                 indicatorColor = textOrange,
-                                selectedTextColor =  textOrange,
+                                selectedTextColor = textOrange,
                                 unselectedTextColor = textColor
                             ),
                         )
@@ -220,12 +222,14 @@ class MainActivity : ComponentActivity() {
                             },
                             icon = {},
                             label = {
-                                Text("Razas",
-                                    fontSize = 30.sp)
+                                Text(
+                                    "Razas",
+                                    fontSize = 30.sp
+                                )
                             },
                             colors = NavigationBarItemDefaults.colors(
                                 indicatorColor = textOrange,
-                                selectedTextColor =  textOrange,
+                                selectedTextColor = textOrange,
                                 unselectedTextColor = textColor
                             )
                         )
@@ -234,16 +238,16 @@ class MainActivity : ComponentActivity() {
                 }
             },
             floatingActionButton = {
-                if(barras && (rutaActual == "animales" || rutaActual == "razas")){
+                if (barras && (rutaActual == "animales" || rutaActual == "razas")) {
                     FloatingActionButton(
                         containerColor = buttonColor,
                         onClick = {
-                            if(rutaActual == "animales"){
+                            if (rutaActual == "animales") {
                                 abrirModalAgregar(null)
-                            }else{
+                            } else {
                                 abrirModalAgregar(
                                     Raza(
-                                        0,"","visible",0, ""
+                                        0, "", "visible", 0, ""
                                     )
                                 )
                             }
@@ -262,25 +266,28 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.padding(padding),
                 navController = navController,
                 startDestination = "loginfirst",
-            ){
-                composable("loginfirst"){ loginFirst(navController) }
+            ) {
+                composable("loginfirst") { loginFirst(navController) }
 
                 composable("loginsecond") { LoginSecond(navController) }
 
-                composable("razas"){ pantallaRaza(navController, viewModel, abrirEditar = abrirModalEditar) }
+                composable("razas") {
+                    pantallaRaza(
+                        navController,
+                        viewModel,
+                        abrirEditar = abrirModalEditar
+                    )
+                }
 
-                composable("animales"){ pantallaAnimal(navController, viewModel, abrirEditar = abrirModalEditar) }
+                composable("animales") {
+                    pantallaAnimal(
+                        navController,
+                        viewModel,
+                        abrirEditar = abrirModalEditar
+                    )
+                }
 
             }
         }
-
-
-
     }
-
-
-
-
-
 }
-

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +39,8 @@ fun modaleditar(
     var expanded by remember {mutableStateOf(false)}
     var animalSeleccionado by remember {mutableStateOf(animal?.nombre ?: "Selecciona un animal")}
     var idAnimalSeleccionado by remember {mutableStateOf<Int?>(raza?.id_animal ?: null)}
+    val animales by viewModel.animales.collectAsState()
+
     AlertDialog(
         onDismissRequest = onDismissRequest,
         containerColor = Background,
@@ -107,7 +110,7 @@ fun modaleditar(
                             expanded = expanded,
                             onDismissRequest = { expanded = false }
                         ) {
-                            viewModel.animales.value.forEach { a ->
+                            animales.forEach { a ->
                                 DropdownMenuItem(
                                     text = { Text(a.nombre) },
                                     onClick = {

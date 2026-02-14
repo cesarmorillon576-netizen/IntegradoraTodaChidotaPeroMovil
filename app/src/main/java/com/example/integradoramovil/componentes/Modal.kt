@@ -17,6 +17,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,7 +52,7 @@ fun modal(
     var expanded by remember {mutableStateOf(false)}
     var animalSeleccionado by remember {mutableStateOf("Selecciona un animal")}
     var idAnimalSeleccionado by remember {mutableStateOf<Int?>(null)}
-
+    val animales by viewModel.animales.collectAsState()
 
     AlertDialog(
         onDismissRequest = onDismissRequest,
@@ -135,7 +136,7 @@ fun modal(
                             expanded = expanded,
                             onDismissRequest = { expanded = false }
                         ) {
-                            viewModel.animales.value.forEach { animal ->
+                            animales.forEach { animal ->
                                 DropdownMenuItem(
                                     text = { Text(animal.nombre) },
                                     onClick = {

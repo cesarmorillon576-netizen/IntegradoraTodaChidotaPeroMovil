@@ -28,6 +28,8 @@ import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.ui.theme.Background
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
+import androidx.compose.runtime.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +44,7 @@ fun pantallaAnimal(
         viewModel.cargarAnimales()
     }
 
-    val animales by viewModel.animales
+    val animales by viewModel.animales.collectAsState()
 
     Box(
         modifier = Modifier
@@ -52,8 +54,11 @@ fun pantallaAnimal(
         LazyColumn(
             modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
         ) {
-            items(animales, key = {it.id_animal}){ a ->
-                tarjeta(a, viewModel, abrirEditar)
+            items(
+                items = animales,
+                key = { animal: Animal -> animal.id_animal }
+            ) { animal: Animal ->
+                tarjeta(animal, viewModel, abrirEditar)
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }
