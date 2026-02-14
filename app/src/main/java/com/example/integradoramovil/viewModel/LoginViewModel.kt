@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.integradoramovil.network.apiservice
 import kotlinx.coroutines.launch
