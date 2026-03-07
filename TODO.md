@@ -1,11 +1,10 @@
 # ya no es todo
-# - los repositorios
-# - los stateflow en el repositorio
-# - ya esta integrado el lifecycle de los vm
-# - 
+# - apiservice con rutas para cita
+# - vm para citas (faltan cosas)
 
 # si es TODO 
-# - separar el vm
-# - implementar la cita
-# - vistas
+# - falta implementar lógica en funciones del repositorio de cita
+# - completar el vm para citas
+# - las vistassss
+# - guardar token en shared preferences
 

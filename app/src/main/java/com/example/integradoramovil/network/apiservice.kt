@@ -4,6 +4,9 @@ import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.modelos.LoginResponse
 import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.modelos.RazaRequest
+import com.example.integradoramovil.modelos.User
+import com.example.integradoramovil.modelos.Cita
+import com.example.integradoramovil.modelos.CitaRequest
 import retrofit2.Response
 import retrofit2.http.*
 import retrofit2.http.GET
@@ -76,5 +79,27 @@ interface apiservice {
     @PUT("animal/cambiar-estado/{id}")
     suspend fun cambiarEstadoAnimal(
         @Path("id") id: Int
+    )
+
+    // rutas para citas
+
+    @GET("cita")
+    suspend fun obtenerCitas(): List<Cita>
+
+    @POST("cita")
+    suspend fun crearCita(
+        @Body cita: CitaRequest
+    )
+
+    @PUT("cita/{id}")
+    suspend fun actualizarCita(
+        @Path("id") id: Int,
+        @Body cita: CitaRequest
+    )
+
+    @PUT("cita/cambiar-estado/{id}")
+    suspend fun cambiarEstadoCita(
+        @Path("id") id: Int,
+        @Field("estado") estado: String 
     )
 }

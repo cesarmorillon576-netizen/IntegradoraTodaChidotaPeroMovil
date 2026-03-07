@@ -27,11 +27,6 @@ data class Animal(
     val visibilidad: String
 )
 
-data class RazaRequest(
-    val nombre: String,
-    val id_animal: Int?
-)
-
 data class Cita(
     val id: Int,
     val estado: String,
@@ -49,4 +44,17 @@ data class Mascota(
     val fecha_nacimiento: String,
     val visibilidad: String?,
     val raza: Raza
+)
+
+data class RazaRequest(
+    val nombre: String,
+    val id_animal: Int?
+)
+
+data class CitaRequest(
+    val estado: String,
+    val fecha: String,
+    val tipo: String?,
+    val mascota_id: Int,
+    val horario_trabajador_id: Int
 )
