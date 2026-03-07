@@ -31,3 +31,22 @@ data class RazaRequest(
     val nombre: String,
     val id_animal: Int?
 )
+
+data class Cita(
+    val id: Int,
+    val estado: String,
+    val fecha: String,
+    val tipo: String?,
+    val mascota_id: Int,
+    val horario_trabajador_id: Int
+)
+
+data class Mascota(
+    val id: Int,
+    val nombre: String,
+    val peso: Float,
+    val descripcion: String,
+    val fecha_nacimiento: String,
+    val visibilidad: String?,
+    val raza: Raza
+)
