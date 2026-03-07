@@ -20,7 +20,7 @@ class CitaViewModel(
     }
 
     fun cargarCitas(){
-        viewModdelScope.launch{
+        viewModelScope.launch{
             repository.cargarCitas()
         }
     }
