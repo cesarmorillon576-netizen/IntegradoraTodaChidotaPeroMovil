@@ -1,6 +1,7 @@
 package com.example.integradoramovil.pantallas
 
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -34,9 +35,9 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
@@ -66,6 +67,7 @@ import com.example.integradoramovil.ui.theme.textColorsubMain
 import com.example.integradoramovil.ui.theme.textInputOrange
 import com.example.integradoramovil.ui.theme.textOrange
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.integradoramovil.viewModel.LoginViewModel
 
 @Composable
@@ -152,9 +154,15 @@ fun loginFirst( navController: NavController){
     }
 }
 @Composable
-fun LoginSecond(navController: NavController,viewModel: LoginViewModel = LoginViewModel){
+fun LoginSecond(navController: NavController){
+    val context = LocalContext.current
+    val viewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory(context))
     var correo by remember { mutableStateOf("") }
     var contraseña by remember { mutableStateOf("") }
+    val emailError by viewModel.emailValidationError
+    val passwordError by viewModel.passwordValidationError
+    val loginError by viewModel.loginError
+    val isLoading by viewModel.isLoading
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -206,8 +214,8 @@ fun LoginSecond(navController: NavController,viewModel: LoginViewModel = LoginVi
                         lineHeight = 20.sp,
                     ), color = textOrange,
                     modifier = Modifier.padding(15.dp,0.dp))
-                if(!viewModel.IsText.isEmpty()){
-                    Text(text = viewModel.IsText,
+                loginError?.let { error ->
+                    Text(text = error,
                         style = TextStyle(
                             fontSize = 15.sp,
                             fontFamily = baloo,
@@ -222,8 +230,8 @@ fun LoginSecond(navController: NavController,viewModel: LoginViewModel = LoginVi
                         lineHeight = 15.sp,
                     ), color = textColorsubMain,
                     modifier = Modifier.padding(15.dp,0.dp))
-                if(!viewModel.isNotEmail.isNullOrEmpty()){
-                    Text(text = viewModel.isNotEmail,
+                if (emailError != null) {
+                    Text(text = emailError,
                         style = TextStyle(
                             fontSize = 15.sp,
                             fontFamily = baloo,
@@ -234,7 +242,10 @@ fun LoginSecond(navController: NavController,viewModel: LoginViewModel = LoginVi
                 }
                 OutlinedTextField(
                     value = correo,
-                    onValueChange = {correo = it},
+                    onValueChange = { 
+                        correo = it
+                        viewModel.validateEmail(it)
+                    },
                     singleLine = true,
                     placeholder = {Text(text = "Nombre@ejemplo.com",
                         color = BackgroundCard)},
@@ -267,8 +278,8 @@ fun LoginSecond(navController: NavController,viewModel: LoginViewModel = LoginVi
                     ), color = textColorsubMain,
                     modifier = Modifier.padding(15.dp,0.dp)
                 )
-                if(!viewModel.isNotPassword.isNullOrEmpty()){
-                    Text(text = viewModel.isNotPassword,
+                if (passwordError != null) {
+                    Text(text = passwordError,
                         style = TextStyle(
                             fontSize = 15.sp,
                             fontFamily = baloo,
@@ -280,7 +291,10 @@ fun LoginSecond(navController: NavController,viewModel: LoginViewModel = LoginVi
 
                 OutlinedTextField(
                     value = contraseña,
-                    onValueChange = {contraseña = it},
+                    onValueChange = { 
+                        contraseña = it
+                        viewModel.validatePassword(it)
+                    },
                     singleLine = true,
                     placeholder = {Text(text = "****",
                         color = BackgroundCard)},
@@ -326,14 +340,13 @@ fun LoginSecond(navController: NavController,viewModel: LoginViewModel = LoginVi
                 }
                 Spacer(modifier = Modifier.height(5.dp))
                 Button(onClick = {
-                    viewModel.IsLoading = true
-                    Log.e("BOTON", "El botón sí fue clickeado")
-                    viewModel.trying(correo, contraseña, navController)},
+                    viewModel.login(correo, contraseña, navController, context)
+                },
                     shape = RoundedCornerShape(3.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = buttonColor,
                     ), modifier = Modifier.fillMaxWidth().padding(40.dp,0.dp)){
-                    if(viewModel.IsLoading){
+                    if(isLoading){
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
                             color = Color.White,

@@ -1,17 +1,16 @@
 package com.example.integradoramovil.repositorios
 
-import com.example.integradoramovil.network.RetroFitClient
-import com.example.integradoramovil.modelos.CitaRequest
+import com.example.integradoramovil.network.apiservice
+import com.example.integradoramovil.modelos.Cita
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlin.collections.emptyList
-import com.example.integradoramovil.modelos.Cita
-class CitaRepository {
+class CitaRepository(private val api: com.example.integradoramovil.network.apiservice) {
     private val estados: List<String> = listOf("agendada", "realizada","en_proceso", "cancelada")
     
-    private val _citas = MutableStateFlow<List<Cita>>(emptyList())
-    val citas: StateFlow<List<Cita>> = _citas.asStateFlow()
+    private val _citas = MutableStateFlow<List<com.example.integradoramovil.modelos.Cita>>(emptyList())
+    val citas: StateFlow<List<com.example.integradoramovil.modelos.Cita>> = _citas.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -23,7 +22,7 @@ class CitaRepository {
         _isLoading.value = true
         _error.value = null
         try{
-            val res = RetroFitClient.api.obtenerCitas()
+            val res = api.obtenerCitas()
             _citas.value = res
         } catch (e: Exception) {
             _error.value = e.message ?: "Error al cargar citas"
@@ -45,7 +44,7 @@ class CitaRepository {
         _isLoading.value = true
         _error.value = null
         return try {
-            RetroFitClient.api.cambiarEstadoCita(id, estado)
+            api.cambiarEstadoCita(id, estado)
             cargarCitas()
             Result.success(Unit)
         } catch (e: Exception) {
@@ -56,5 +55,7 @@ class CitaRepository {
         }
     }
 
-
+    fun clearError() {
+        _error.value = null
+    }
 }

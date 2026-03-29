@@ -29,9 +29,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -40,6 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.integradoramovil.componentes.modal
 import com.example.integradoramovil.componentes.modaleditar
 import com.example.integradoramovil.modelos.Animal
+import com.example.integradoramovil.modelos.AuthManager
 import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.pantallas.*
 import com.example.integradoramovil.ui.theme.Background
@@ -262,10 +263,16 @@ class MainActivity : ComponentActivity() {
                 }
             }
         ) { padding ->
+            val context = LocalContext.current
+            val token = AuthManager.getToken(context)
             NavHost(
                 modifier = Modifier.padding(padding),
                 navController = navController,
-                startDestination = "loginfirst",
+                startDestination = if(token != null){
+                    "home"
+                }else{
+                    "loginfirst"
+                }
             ) {
                 composable("loginfirst") { loginFirst(navController) }
 
@@ -287,6 +294,9 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
+                composable("citas"){
+
+                }
             }
         }
     }

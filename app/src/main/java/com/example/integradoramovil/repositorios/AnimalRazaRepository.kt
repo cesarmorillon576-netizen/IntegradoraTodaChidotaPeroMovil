@@ -1,15 +1,17 @@
 package com.example.integradoramovil.repositorios
 
+import android.content.Context
 import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.modelos.RazaRequest
 import com.example.integradoramovil.network.RetroFitClient
+import com.example.integradoramovil.network.apiservice
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlin.collections.emptyList
 
-class AnimalRazaRepository {
+class AnimalRazaRepository(private val api: apiservice) {
 
     private val _animales = MutableStateFlow<List<Animal>>(emptyList())
     val animales: StateFlow<List<Animal>> = _animales.asStateFlow()
@@ -28,8 +30,8 @@ class AnimalRazaRepository {
     suspend fun cargarAnimales() {
         _isLoading.value = true
         _error.value = null
-        try {
-            val res = RetroFitClient.api.obtenerAnimales()
+        try
+            val res = api.obtenerAnimales()
             _animales.value = res
         } catch (e: Exception) {
             _error.value = e.message ?: "Error al cargar animales"
@@ -42,7 +44,7 @@ class AnimalRazaRepository {
         _isLoading.value = true
         _error.value = null
         return try {
-            val response = RetroFitClient.api.crearAnimal(nombre)
+            val response = api.crearAnimal(nombre)
             // Después de crear, recargamos la lista
             cargarAnimales()
             Result.success(Animal(0, nombre, "activo"))
@@ -58,7 +60,7 @@ class AnimalRazaRepository {
         _isLoading.value = true
         _error.value = null
         return try {
-            RetroFitClient.api.actualizarAnimal(animal.id_animal, animal.nombre)
+            api.actualizarAnimal(animal.id_animal, animal.nombre)
             cargarAnimales()
             Result.success(Unit)
         } catch (e: Exception) {
@@ -73,7 +75,7 @@ class AnimalRazaRepository {
         _isLoading.value = true
         _error.value = null
         return try {
-            RetroFitClient.api.borrarAnimal(id)
+            api.borrarAnimal(id)
             cargarAnimales()
             Result.success(Unit)
         } catch (e: Exception) {
@@ -88,7 +90,7 @@ class AnimalRazaRepository {
         _isLoading.value = true
         _error.value = null
         return try {
-            RetroFitClient.api.cambiarEstadoAnimal(id)
+            api.cambiarEstadoAnimal(id)
             cargarAnimales()
             Result.success(Unit)
         } catch (e: Exception) {
@@ -105,7 +107,7 @@ class AnimalRazaRepository {
         _isLoading.value = true
         _error.value = null
         try {
-            val res = RetroFitClient.api.obtenerRazas()
+            val res = api.obtenerRazas()
             _razas.value = res
         } catch (e: Exception) {
             _error.value = e.message ?: "Error al cargar razas"
@@ -119,7 +121,7 @@ class AnimalRazaRepository {
         _error.value = null
         return try {
             val razaRequest = RazaRequest(raza.nombre, raza.id_animal)
-            RetroFitClient.api.crearRaza(razaRequest)
+            api.crearRaza(razaRequest)
             cargarRazas()
             Result.success(raza)
         } catch (e: Exception) {
@@ -134,7 +136,7 @@ class AnimalRazaRepository {
         _isLoading.value = true
         _error.value = null
         return try {
-            RetroFitClient.api.actualizarRaza(raza.id_raza, raza.nombre, raza.id_animal)
+            api.actualizarRaza(raza.id_raza, raza.nombre, raza.id_animal)
             cargarRazas()
             Result.success(Unit)
         } catch (e: Exception) {
@@ -149,7 +151,7 @@ class AnimalRazaRepository {
         _isLoading.value = true
         _error.value = null
         return try {
-            RetroFitClient.api.eliminarRaza(id)
+            api.eliminarRaza(id)
             cargarRazas()
             Result.success(Unit)
         } catch (e: Exception) {
@@ -164,7 +166,7 @@ class AnimalRazaRepository {
         _isLoading.value = true
         _error.value = null
         return try {
-            RetroFitClient.api.cambiarEstadoRaza(id)
+            api.cambiarEstadoRaza(id)
             cargarRazas()
             Result.success(Unit)
         } catch (e: Exception) {

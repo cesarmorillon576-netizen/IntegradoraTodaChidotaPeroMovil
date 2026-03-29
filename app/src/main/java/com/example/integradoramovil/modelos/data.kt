@@ -1,7 +1,15 @@
 package com.example.integradoramovil.modelos
 
-data class LoginResponse(
-    val user: User
+// hay que manejar la respuesta o me mato
+data class ApiResponse<T>(
+    val data: T?,
+    val mensaje: String,
+    val status: Int,
+    val error: String?
+)
+
+data class TokenData(
+    val token: String
 )
 
 data class User(

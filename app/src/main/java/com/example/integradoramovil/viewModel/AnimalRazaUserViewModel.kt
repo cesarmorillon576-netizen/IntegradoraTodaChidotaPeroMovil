@@ -1,18 +1,19 @@
 package com.example.integradoramovil.viewModel
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.integradoramovil.modelos.Animal
 import com.example.integradoramovil.modelos.Raza
+import com.example.integradoramovil.network.RetroFitClient
 import com.example.integradoramovil.repositorios.AnimalRazaRepository
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class AnimalRazaUserViewModel(
-    private val repository: AnimalRazaRepository = AnimalRazaRepository()
+    private val repository: AnimalRazaRepository
 ) : ViewModel() {
-
     // Exponer StateFlows del Repository
     val animales: StateFlow<List<Animal>> = repository.animales
     val razas: StateFlow<List<Raza>> = repository.razas
@@ -86,8 +87,23 @@ class AnimalRazaUserViewModel(
         }
     }
 
-    fun clearError() {
+
+fun clearError() {
         repository.clearError()
     }
+
+    companion object Factory {
+        fun create(context: Context): ViewModelProvider.Factory {
+            return object : ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    val api = RetroFitClient.getApi(context)
+                    val repository = AnimalRazaRepository(api)
+                    return AnimalRazaUserViewModel(repository) as T
+                }
+            }
+        }
+    }
 }
+
 

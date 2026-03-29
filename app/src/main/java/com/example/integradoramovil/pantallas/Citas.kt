@@ -1,9 +1,9 @@
 package com.example.integradoramovil.pantallas
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 
 @Composable
-fun Catalogos(navController: NavController){
+fun Citas(navController: NavHostController){
 
 }

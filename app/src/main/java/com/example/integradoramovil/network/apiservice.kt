@@ -1,12 +1,12 @@
 package com.example.integradoramovil.network
 
 import com.example.integradoramovil.modelos.Animal
-import com.example.integradoramovil.modelos.LoginResponse
+import com.example.integradoramovil.modelos.ApiResponse
 import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.modelos.RazaRequest
-import com.example.integradoramovil.modelos.User
 import com.example.integradoramovil.modelos.Cita
 import com.example.integradoramovil.modelos.CitaRequest
+import com.example.integradoramovil.modelos.TokenData
 import retrofit2.Response
 import retrofit2.http.*
 import retrofit2.http.GET
@@ -15,18 +15,18 @@ interface apiservice {
 
     // rutas de login
     @FormUrlEncoded
-    @POST("login")
+    @POST("auth/login")
     suspend fun login(
-        @Field("correo") correo:String,
+        @Field("email") correo:String,
         @Field("password")password:String
-    ): Response<LoginResponse>
+    ): Response<ApiResponse<TokenData>>
 
 
     // rutas para razas
-    @GET("raza")
+    @GET("raza/raza")
     suspend fun obtenerRazas(): List<Raza>
 
-    @POST("raza")
+    @POST("raza/raza")
     suspend fun crearRaza(
         @Body raza: RazaRequest
     )
@@ -34,7 +34,7 @@ interface apiservice {
 
 
     @FormUrlEncoded
-    @PUT("raza/{id}")
+    @PUT("raza/raza/{id}")
     suspend fun actualizarRaza(
         @Path("id") id_raza: Int,
         @Field("nombre") nombre: String,
