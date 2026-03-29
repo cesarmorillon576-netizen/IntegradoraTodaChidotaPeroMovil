@@ -30,9 +30,13 @@ class AnimalRazaRepository(private val api: apiservice) {
     suspend fun cargarAnimales() {
         _isLoading.value = true
         _error.value = null
-        try
+        try{
             val res = api.obtenerAnimales()
-            _animales.value = res
+            if(res.isSuccessful){
+                _animales.value = res.body()?.data ?: emptyList()
+            }else{
+                _error.value = "Error: ${res.code()}"
+            }
         } catch (e: Exception) {
             _error.value = e.message ?: "Error al cargar animales"
         } finally {
@@ -60,7 +64,7 @@ class AnimalRazaRepository(private val api: apiservice) {
         _isLoading.value = true
         _error.value = null
         return try {
-            api.actualizarAnimal(animal.id_animal, animal.nombre)
+            api.actualizarAnimal(animal.id, animal.nombre)
             cargarAnimales()
             Result.success(Unit)
         } catch (e: Exception) {
@@ -108,7 +112,11 @@ class AnimalRazaRepository(private val api: apiservice) {
         _error.value = null
         try {
             val res = api.obtenerRazas()
-            _razas.value = res
+            if(res.isSuccessful){
+                _razas.value = res.body()?.data ?: emptyList()
+            }else{
+                _error.value = "Error: ${res.code()}"
+            }
         } catch (e: Exception) {
             _error.value = e.message ?: "Error al cargar razas"
         } finally {
@@ -120,7 +128,7 @@ class AnimalRazaRepository(private val api: apiservice) {
         _isLoading.value = true
         _error.value = null
         return try {
-            val razaRequest = RazaRequest(raza.nombre, raza.id_animal)
+            val razaRequest = RazaRequest(raza.nombre, raza.animal_id)
             api.crearRaza(razaRequest)
             cargarRazas()
             Result.success(raza)
@@ -136,7 +144,7 @@ class AnimalRazaRepository(private val api: apiservice) {
         _isLoading.value = true
         _error.value = null
         return try {
-            api.actualizarRaza(raza.id_raza, raza.nombre, raza.id_animal)
+            api.actualizarRaza(raza.id, raza.nombre, raza.animal_id)
             cargarRazas()
             Result.success(Unit)
         } catch (e: Exception) {

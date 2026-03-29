@@ -3,34 +3,44 @@ package com.example.integradoramovil.modelos
 // hay que manejar la respuesta o me mato
 data class ApiResponse<T>(
     val data: T?,
-    val mensaje: String,
+    val message: String,
     val status: Int,
     val error: String?
 )
 
-data class TokenData(
-    val token: String
+
+// login
+data class LoginResponse(
+    val token: String,
+    val user: User
 )
 
 data class User(
     val id: Int,
     val nombre: String,
-    val correo: String,
+    val email: String,
     val telefono: String,
     //  val estado: String,
-    val id_rol: Int
+    val rol_id: Int,
+    val rol: Rol
+)
+
+// catalogos
+data class Rol(
+    val id: Int,
+    val nombre: String
 )
 
 data class Raza(
-    val id_raza: Int,
+    val id: Int,
     val nombre: String,
     val visibilidad: String,
-    val id_animal: Int?,
+    val animal_id: Int?,
     val animal: String
 )
 
 data class Animal(
-    val id_animal: Int,
+    val id: Int,
     val nombre: String,
     val visibilidad: String
 )
@@ -54,6 +64,7 @@ data class Mascota(
     val raza: Raza
 )
 
+// para peticiones
 data class RazaRequest(
     val nombre: String,
     val id_animal: Int?

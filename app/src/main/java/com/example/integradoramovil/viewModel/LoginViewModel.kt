@@ -31,7 +31,7 @@ class LoginViewModel(
         viewModelScope.launch {
             val success = repository.login(email, password, context)
             if (success) {
-                navController.navigate("animales") {
+                navController.navigate("home") {
                     popUpTo("login") { inclusive = true }
                 }
             }

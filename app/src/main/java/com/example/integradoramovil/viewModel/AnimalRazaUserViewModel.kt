@@ -1,5 +1,6 @@
 package com.example.integradoramovil.viewModel
 
+import android.content.Context
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -41,7 +42,7 @@ class AnimalRazaUserViewModel(
 
     fun eliminarRaza(raza: Raza) {
         viewModelScope.launch {
-            repository.eliminarRaza(raza.id_raza)
+            repository.eliminarRaza(raza.id)
         }
     }
 
@@ -67,22 +68,22 @@ class AnimalRazaUserViewModel(
 
     fun eliminarAnimal(animal: Animal) {
         viewModelScope.launch {
-            repository.eliminarAnimal(animal.id_animal)
+            repository.eliminarAnimal(animal.id)
         }
     }
 
-    fun crearAnimal(animal: Animal) {
+    fun crearAnimal(animal: String) {
         viewModelScope.launch {
-            repository.crearAnimal(animal.nombre)
+            repository.crearAnimal(animal)
         }
     }
 
     fun cambiarEstado(animal: Animal?, raza: Raza?) {
         viewModelScope.launch {
             if (animal != null) {
-                repository.cambiarEstadoAnimal(animal.id_animal)
+                repository.cambiarEstadoAnimal(animal.id)
             } else if (raza != null) {
-                repository.cambiarEstadoRaza(raza.id_raza)
+                repository.cambiarEstadoRaza(raza.id)
             }
         }
     }

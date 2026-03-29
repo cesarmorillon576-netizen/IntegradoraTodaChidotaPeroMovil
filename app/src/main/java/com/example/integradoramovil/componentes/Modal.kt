@@ -141,7 +141,7 @@ fun modal(
                                     text = { Text(animal.nombre) },
                                     onClick = {
                                         animalSeleccionado = animal.nombre
-                                        idAnimalSeleccionado = animal.id_animal
+                                        idAnimalSeleccionado = animal.id
                                         expanded = false
                                     }
                                 )

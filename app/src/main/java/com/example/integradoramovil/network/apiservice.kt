@@ -6,7 +6,7 @@ import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.modelos.RazaRequest
 import com.example.integradoramovil.modelos.Cita
 import com.example.integradoramovil.modelos.CitaRequest
-import com.example.integradoramovil.modelos.TokenData
+import com.example.integradoramovil.modelos.LoginResponse
 import retrofit2.Response
 import retrofit2.http.*
 import retrofit2.http.GET
@@ -19,72 +19,70 @@ interface apiservice {
     suspend fun login(
         @Field("email") correo:String,
         @Field("password")password:String
-    ): Response<ApiResponse<TokenData>>
+    ): Response<ApiResponse<LoginResponse>>
 
 
     // rutas para razas
-    @GET("raza/raza")
-    suspend fun obtenerRazas(): List<Raza>
+    @GET("raza/full")
+    suspend fun obtenerRazas(): Response<ApiResponse<List<Raza>>>
 
     @POST("raza/raza")
     suspend fun crearRaza(
         @Body raza: RazaRequest
-    )
-
-
+    ): Response<ApiResponse<Unit>>
 
     @FormUrlEncoded
     @PUT("raza/raza/{id}")
     suspend fun actualizarRaza(
-        @Path("id") id_raza: Int,
+        @Path("id") id: Int,
         @Field("nombre") nombre: String,
-        @Field("id_animal") id_animal: Int?
-    )
+        @Field("animal_id") animal_id: Int?
+    ): Response<ApiResponse<Unit>>
 
 
     @DELETE("raza/{id}")
     suspend fun eliminarRaza(
-        @Path("id_raza") id_raza: Int
-    )
+        @Path("id") id_raza: Int
+    ): Response<ApiResponse<Unit>>
 
 
-    @PUT("raza/cambiar-estado/{id_raza}")
+    @PUT("raza/cambiar-estado/{id}")
     suspend fun cambiarEstadoRaza(
-        @Path("id_raza") id_raza: Int
-    )
+        @Path("id") id: Int
+    ): Response<ApiResponse<Unit>>
 
     // rutas para animales
-    @GET("animal")
-    suspend fun obtenerAnimales():  List<Animal>
+    @GET("animal/full")
+    suspend fun obtenerAnimales():  Response<ApiResponse<List<Animal>>>
 
     @FormUrlEncoded
-    @POST("animal")
+    @POST("animal/store")
     suspend fun crearAnimal(
         @Field("nombre") nombre: String
-    )
+    ): Response<ApiResponse<Unit>>
 
     @FormUrlEncoded
-    @PUT("animal/{id}")
+    @PUT("animal/update/{id}")
     suspend fun actualizarAnimal(
         @Path("id") id: Int,
         @Field("nombre") nombre: String
-    )
+    ): Response<ApiResponse<Unit>>
 
-    @DELETE("animal/{id}")
+    @DELETE("animal/delete/{id}")
     suspend fun borrarAnimal(
         @Path("id") id: Int
-    )
+    ): Response<ApiResponse<Unit>>
 
 
     @PUT("animal/cambiar-estado/{id}")
     suspend fun cambiarEstadoAnimal(
         @Path("id") id: Int
-    )
+    ): Response<ApiResponse<Unit>>
 
     // rutas para citas
 
     @GET("cita")
-    suspend fun obtenerCitas(): List<Cita>
+    suspend fun obtenerCitas(): Response<ApiResponse<List<Cita>>>
 
     @POST("cita")
     suspend fun crearCita(

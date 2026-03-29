@@ -1,6 +1,7 @@
 package com.example.integradoramovil
 
 import android.os.Bundle
+import com.example.integradoramovil.navegacion.AppNavigation
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -57,9 +58,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        AuthManager.init(this)
         setContent {
             IntegradoraMovilTheme {
-                val viewModel: AnimalRazaUserViewModel = viewModel()
+                AppNavigation()
+                /*val context = LocalContext.current
+                val viewModel: AnimalRazaUserViewModel = viewModel(
+                    factory = AnimalRazaUserViewModel.create(context)
+                )
                 var mostrarModal by remember { mutableStateOf(false) }
                 var mostrarModalEditar by remember { mutableStateOf(false) }
                 var razaSeleccionada by remember { mutableStateOf<Raza?>(null) }
@@ -101,7 +107,7 @@ class MainActivity : ComponentActivity() {
                                 if (razaSeleccionada == null) {
                                     viewModel.crearAnimal(
                                         Animal(
-                                            id_animal = 0,
+                                            animal_id = 0,
                                             nombre = nombre,
                                             visibilidad = "visible"
                                         )
@@ -150,11 +156,12 @@ class MainActivity : ComponentActivity() {
                     }
 
                 }
+            }*/
             }
         }
     }
-
-
+}
+/*
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun MAIN(
@@ -269,7 +276,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.padding(padding),
                 navController = navController,
                 startDestination = if(token != null){
-                    "home"
+                    "loginfirst"
                 }else{
                     "loginfirst"
                 }
@@ -300,4 +307,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
+}*/

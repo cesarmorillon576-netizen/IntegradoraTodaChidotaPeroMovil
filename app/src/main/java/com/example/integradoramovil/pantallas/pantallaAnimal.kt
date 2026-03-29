@@ -34,33 +34,24 @@ import androidx.compose.runtime.collectAsState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun pantallaAnimal(
-    navController: NavController,
     viewModel: AnimalRazaUserViewModel,
     abrirEditar: (Raza?, Animal?) -> Unit
 ){
-
-
     LaunchedEffect(Unit) {
         viewModel.cargarAnimales()
     }
 
     val animales by viewModel.animales.collectAsState()
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Background)
-    ){
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
-        ) {
-            items(
-                items = animales,
-                key = { animal: Animal -> animal.id_animal }
-            ) { animal: Animal ->
-                tarjeta(animal, viewModel, abrirEditar)
-                Spacer(modifier = Modifier.height(10.dp))
-            }
+    LazyColumn(
+        modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
+    ) {
+        items(
+            items = animales,
+            key = { animal: Animal -> animal.id }
+        ) { animal: Animal ->
+            tarjeta(animal, viewModel, abrirEditar)
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 

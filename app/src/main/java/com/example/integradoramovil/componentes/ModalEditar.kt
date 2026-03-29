@@ -38,7 +38,7 @@ fun modaleditar(
 
     var expanded by remember {mutableStateOf(false)}
     var animalSeleccionado by remember {mutableStateOf(animal?.nombre ?: "Selecciona un animal")}
-    var idAnimalSeleccionado by remember {mutableStateOf<Int?>(raza?.id_animal ?: null)}
+    var idAnimalSeleccionado by remember {mutableStateOf<Int?>(raza?.animal_id ?: null)}
     val animales by viewModel.animales.collectAsState()
 
     AlertDialog(
@@ -110,12 +110,12 @@ fun modaleditar(
                             expanded = expanded,
                             onDismissRequest = { expanded = false }
                         ) {
-                            animales.forEach { a ->
+                            animales.forEach { animal ->
                                 DropdownMenuItem(
-                                    text = { Text(a.nombre) },
+                                    text = { Text(animal.nombre) },
                                     onClick = {
-                                        animalSeleccionado = a.nombre
-                                        idAnimalSeleccionado = a.id_animal
+                                        animalSeleccionado = animal.nombre
+                                        idAnimalSeleccionado = animal.id
                                         expanded = false
                                     }
                                 )

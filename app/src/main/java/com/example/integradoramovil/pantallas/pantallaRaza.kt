@@ -23,7 +23,6 @@ import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
 
 @Composable
 fun pantallaRaza(
-    navController: NavController,
     viewModel: AnimalRazaUserViewModel,
     abrirEditar: (Raza?, Animal?) -> Unit
 ){
@@ -34,7 +33,7 @@ fun pantallaRaza(
     val razas by viewModel.razas.collectAsState()
     val animales by viewModel.animales.collectAsState()
 
-    val animalesMap = animales.associateBy { it.id_animal }
+    val animalesMap = animales.associateBy { it.id }
 
     Box(
         modifier = Modifier
@@ -44,8 +43,8 @@ fun pantallaRaza(
         LazyColumn(
             modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
         ) {
-            items(razas, key = {it.id_raza}){ r ->
-                animalesMap[r.id_animal]?.let { animal ->
+            items(razas, key = {it.id}){ r ->
+                animalesMap[r.id]?.let { animal ->
                     tarjeta(r, animal, viewModel, abrirEditar = abrirEditar)
                 }
                 Spacer(modifier = Modifier.height(10.dp))

@@ -67,6 +67,7 @@ import com.example.integradoramovil.ui.theme.textColorsubMain
 import com.example.integradoramovil.ui.theme.textInputOrange
 import com.example.integradoramovil.ui.theme.textOrange
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.integradoramovil.viewModel.LoginViewModel
 
@@ -156,13 +157,13 @@ fun loginFirst( navController: NavController){
 @Composable
 fun LoginSecond(navController: NavController){
     val context = LocalContext.current
-    val viewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory(context))
+    val viewModel: LoginViewModel = viewModel(factory = LoginViewModel.create(context))
     var correo by remember { mutableStateOf("") }
     var contraseña by remember { mutableStateOf("") }
-    val emailError by viewModel.emailValidationError
-    val passwordError by viewModel.passwordValidationError
-    val loginError by viewModel.loginError
-    val isLoading by viewModel.isLoading
+    val emailError by viewModel.emailValidationError.collectAsState(initial = null)
+    val passwordError by viewModel.passwordValidationError.collectAsState(initial = null)
+    val loginError by viewModel.loginError.collectAsState(initial = null)
+    val isLoading by viewModel.isLoading.collectAsState(initial = false)
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -230,8 +231,8 @@ fun LoginSecond(navController: NavController){
                         lineHeight = 15.sp,
                     ), color = textColorsubMain,
                     modifier = Modifier.padding(15.dp,0.dp))
-                if (emailError != null) {
-                    Text(text = emailError,
+                emailError?.let {
+                    Text(text = it,
                         style = TextStyle(
                             fontSize = 15.sp,
                             fontFamily = baloo,
@@ -278,8 +279,8 @@ fun LoginSecond(navController: NavController){
                     ), color = textColorsubMain,
                     modifier = Modifier.padding(15.dp,0.dp)
                 )
-                if (passwordError != null) {
-                    Text(text = passwordError,
+                passwordError?.let {
+                    Text(text = it,
                         style = TextStyle(
                             fontSize = 15.sp,
                             fontFamily = baloo,

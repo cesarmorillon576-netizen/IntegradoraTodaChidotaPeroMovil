@@ -21,9 +21,9 @@ class CitaRepository(private val api: com.example.integradoramovil.network.apise
     suspend fun cargarCitas(){
         _isLoading.value = true
         _error.value = null
-        try{
+        try{/*
             val res = api.obtenerCitas()
-            _citas.value = res
+            _citas.value = res*/
         } catch (e: Exception) {
             _error.value = e.message ?: "Error al cargar citas"
 

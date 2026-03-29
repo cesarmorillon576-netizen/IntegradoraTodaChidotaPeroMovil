@@ -3,12 +3,10 @@ package com.example.integradoramovil.repositorios
 import android.content.Context
 import com.example.integradoramovil.modelos.ApiResponse
 import com.example.integradoramovil.modelos.AuthManager
-import com.example.integradoramovil.modelos.TokenData
 import com.example.integradoramovil.network.apiservice
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import retrofit2.Response
 
 class LoginRepository(private val api: apiservice) {
 
@@ -26,8 +24,12 @@ class LoginRepository(private val api: apiservice) {
 
     suspend fun login(email: String, password: String, context: Context): Boolean {
         clearValidationErrors()
-        val isValid = validateCredentials(email, password)
-        if (!isValid) return false
+        validateEmail(email)
+        validatePassword(password)
+        val _emailValidationError = _emailValidationError
+        if(_emailValidationError.value != "" || _passwordValidationError.value != ""){
+            return false
+        }
 
         _isLoading.value = true
         _loginError.value = null
@@ -35,12 +37,14 @@ class LoginRepository(private val api: apiservice) {
         return try {
             val response = api.login(email, password)
             if (response.isSuccessful) {
+                val apiResponse = response.body()
+                val loginResponse = apiResponse?.data
                 val body = response.body()
                 val token = body?.data?.token
-                val mensaje = body?.mensaje
+                val mensaje = body?.message
 
                 if (token != null) {
-                    AuthManager.login("administrador", null, token, context)
+                    AuthManager.login(loginResponse, context)
                     true
                 } else {
                     _loginError.value = mensaje ?: "Error desconocido"
@@ -50,7 +54,7 @@ class LoginRepository(private val api: apiservice) {
                 val errorJson = response.errorBody()?.string()
                 val gson = com.google.gson.Gson()
                 val errorResponse = gson.fromJson(errorJson, ApiResponse::class.java)
-                _loginError.value = errorResponse?.mensaje ?: "Error del servidor"
+                _loginError.value = errorResponse?.message ?: "Error del servidor"
                 false
             }
         } catch (e: Exception) {
