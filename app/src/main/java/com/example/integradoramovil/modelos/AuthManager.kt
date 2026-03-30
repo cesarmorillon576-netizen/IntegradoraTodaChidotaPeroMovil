@@ -41,7 +41,8 @@ object AuthManager {
     }
 
     fun getToken(context: Context): String?{
-        val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+        if(token != null) return token
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getString("token", null)
     }
 

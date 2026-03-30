@@ -7,6 +7,7 @@ import com.example.integradoramovil.modelos.RazaRequest
 import com.example.integradoramovil.modelos.Cita
 import com.example.integradoramovil.modelos.CitaRequest
 import com.example.integradoramovil.modelos.LoginResponse
+import com.example.integradoramovil.modelos.PaginacionCitas
 import retrofit2.Response
 import retrofit2.http.*
 import retrofit2.http.GET
@@ -17,8 +18,8 @@ interface apiservice {
     @FormUrlEncoded
     @POST("auth/login")
     suspend fun login(
-        @Field("email") correo:String,
-        @Field("password")password:String
+        @Field("email") correo: String,
+        @Field("password") password: String
     ): Response<ApiResponse<LoginResponse>>
 
 
@@ -53,7 +54,7 @@ interface apiservice {
 
     // rutas para animales
     @GET("animal/full")
-    suspend fun obtenerAnimales():  Response<ApiResponse<List<Animal>>>
+    suspend fun obtenerAnimales(): Response<ApiResponse<List<Animal>>>
 
     @FormUrlEncoded
     @POST("animal/store")
@@ -81,8 +82,12 @@ interface apiservice {
 
     // rutas para citas
 
-    @GET("cita")
-    suspend fun obtenerCitas(): Response<ApiResponse<List<Cita>>>
+    @POST("cita/search/{history}")
+    suspend fun buscarCitas(
+        @Path("history") history: Boolean = false,
+        @Query("page") pagina: Int,
+        @Body filtros: Map<String, String> = emptyMap()
+    ): Response<ApiResponse<PaginacionCitas>>
 
     @POST("cita")
     suspend fun crearCita(
@@ -98,6 +103,6 @@ interface apiservice {
     @PUT("cita/cambiar-estado/{id}")
     suspend fun cambiarEstadoCita(
         @Path("id") id: Int,
-        @Field("estado") estado: String 
+        @Field("estado") estado: String
     )
 }

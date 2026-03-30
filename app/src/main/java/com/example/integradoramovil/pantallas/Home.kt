@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -29,10 +30,14 @@ import com.example.integradoramovil.ui.theme.textColorsubMain
 @ExperimentalMaterial3Api
 @Composable
 fun Home(navController: NavController){
+
     val context = LocalContext.current
     val user = AuthManager.user
     val nombre = user?.nombre ?: "Usuario"
     val rolusuario = user?.rol?.nombre ?: "Cliente"
+    LaunchedEffect(Unit) {
+        android.util.Log.d("DEBUG_CITAS", "Citas recibidas: ${AuthManager.getToken(context )}")
+    }
 
     Scaffold(
         containerColor = Background,

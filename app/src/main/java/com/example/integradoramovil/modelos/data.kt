@@ -45,25 +45,43 @@ data class Animal(
     val visibilidad: String
 )
 
+// hay que manejar las citas
+data class PaginacionCitas(
+    val current_page: Int,
+    val last_page: Int,
+    val data: List<Cita>? = emptyList(),
+    val total: Int? = 0,
+    val per_page: Int? = null
+)
 data class Cita(
     val id: Int,
-    val estado: String,
-    val fecha: String,
-    val tipo: String?,
-    val mascota_id: Int,
-    val horario_trabajador_id: Int
+    val estado: String = "",
+    val fecha: String? = "",
+    val tipo: String? = "",
+    val descripcion: String? = "",
+    val mascota: Mascota? = null,
+    val consulta: Consulta? = null,
+    val mascota_id: Int? = null,
+    val horario_trabajador_id: Int? = null
 )
 
 data class Mascota(
     val id: Int,
     val nombre: String,
-    val peso: Float,
-    val descripcion: String,
-    val fecha_nacimiento: String,
-    val visibilidad: String?,
-    val raza: Raza
+    val cliente: Cliente? = null,
+    val deleted_at: String? = null
 )
 
+data class Cliente(
+    val id: Int? = null,
+    val user: User? = null
+)
+
+data class Consulta(
+    val id: Int,
+    val pre_diagnostico: String? = "",
+    val indicaciones: String? = ""
+)
 // para peticiones
 data class RazaRequest(
     val nombre: String,
