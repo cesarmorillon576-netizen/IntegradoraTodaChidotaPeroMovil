@@ -37,18 +37,6 @@ class CitaViewModel(
         cargarCitas(nuevaPagina)
     }
 
-    fun cambiarEstado(id: Int, estado: String){
-        viewModelScope.launch{
-            repository.cambiarEstadoCita(id, estado)
-        }
-    }
-
-    fun modificarCita(/* aqui van a ir parametros que no se cuales son */){
-        viewModelScope.launch{
-            repository.modificarCita()
-        }
-    }
-
     companion object Factory {
         fun create(context: Context): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
