@@ -7,6 +7,8 @@ import com.example.integradoramovil.modelos.RazaRequest
 import com.example.integradoramovil.modelos.Cita
 import com.example.integradoramovil.modelos.CitaRequest
 import com.example.integradoramovil.modelos.LoginResponse
+import com.example.integradoramovil.modelos.Mascota
+import com.example.integradoramovil.modelos.MascotaRequest
 import com.example.integradoramovil.modelos.PaginacionCitas
 import retrofit2.Response
 import retrofit2.http.*
@@ -89,20 +91,26 @@ interface apiservice {
         @Body filtros: Map<String, String> = emptyMap()
     ): Response<ApiResponse<PaginacionCitas>>
 
-    @POST("cita")
-    suspend fun crearCita(
-        @Body cita: CitaRequest
-    )
-
-    @PUT("cita/{id}")
-    suspend fun actualizarCita(
-        @Path("id") id: Int,
-        @Body cita: CitaRequest
-    )
-
     @PUT("cita/cambiar-estado/{id}")
     suspend fun cambiarEstadoCita(
         @Path("id") id: Int,
         @Field("estado") estado: String
     )
+
+    // rutas de mascotas
+    @GET("mascota/index")
+    suspend fun obtenerMascotas(
+        @Query("page") pagina: Int = 1
+    ): Response<ApiResponse<List<Mascota>>>
+
+    @POST("mascota/store")
+    suspend fun crearMascota(
+        @Body mascota: MascotaRequest
+    ): Response<ApiResponse<Mascota>>
+
+    @PUT("mascota/update/{id}")
+    suspend fun actualizarMascota(
+        @Path("id") id: Int,
+        @Body mascota: MascotaRequest
+    ): Response<ApiResponse<Mascota>>
 }

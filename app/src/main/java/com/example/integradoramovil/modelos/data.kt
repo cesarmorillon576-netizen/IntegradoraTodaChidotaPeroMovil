@@ -88,6 +88,17 @@ data class RazaRequest(
     val id_animal: Int?
 )
 
+data class MascotaRequest(
+    val nombre: String,
+    val sexo: String,
+    val peso: Double?,
+    val fecha_nacimiento: String,
+    val descripcion: String,
+    val raza_id: Int,
+    val cliente_id: Int?,
+    val visibilidad: String = "visible"
+)
+
 data class CitaRequest(
     val estado: String,
     val fecha: String,

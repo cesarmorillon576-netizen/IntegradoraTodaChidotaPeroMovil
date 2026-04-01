@@ -63,9 +63,6 @@ class CitaRepository(private val api: apiservice) {
         }
     }
 
-    suspend fun modificarCita(/*cita: CitaRequest*/){
-        // aqui va algo
-    }
 
     suspend fun cambiarEstadoCita(id: Int, estado: String): Result<Unit> {
         if (estado !in estados) {
