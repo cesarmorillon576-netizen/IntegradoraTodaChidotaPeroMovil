@@ -1,36 +1,84 @@
 package com.example.integradoramovil.componentes
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.integradoramovil.ui.theme.textColor
-import com.example.integradoramovil.ui.theme.textColorsubMain
-import com.example.integradoramovil.ui.theme.textOrange
+import com.example.integradoramovil.R
+import com.example.integradoramovil.ui.theme.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuCard(titulo: String, subtitulo: String, onCLick: () -> Unit){
+fun MenuCard(
+    titulo: String,
+    subtitulo: String,
+    onClick: () -> Unit,
+    iconRes: Int = R.drawable.huella
+) {
     ElevatedCard(
-        onClick = onCLick,
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = textColorsubMain
-        )
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 10.dp),
+        shape = RoundedCornerShape(28.dp),
+        colors = CardDefaults.elevatedCardColors(containerColor = BackgroundCard),
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
-        Column(modifier = Modifier.padding(20.dp)){
-            Text(titulo, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = textColor)
-            Text(subtitulo, fontSize = 14.sp, color = textOrange)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Surface(
+                modifier = Modifier.size(64.dp),
+                shape = RoundedCornerShape(20.dp),
+                color = PrimaryOrange.copy(alpha = 0.1f)
+            ) {
+                Icon(
+                    painter = painterResource(id = iconRes),
+                    contentDescription = null,
+                    modifier = Modifier.padding(14.dp),
+                    tint = PrimaryOrange
+                )
+            }
+
+            Spacer(modifier = Modifier.width(20.dp))
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = titulo,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = TextMain,
+                    fontFamily = baloo
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = subtitulo,
+                    fontSize = 14.sp,
+                    color = TextSub,
+                    lineHeight = 18.sp,
+                    maxLines = 2
+                )
+            }
+
+            Icon(
+                painter = painterResource(id = R.drawable.huella),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+                tint = PrimaryOrange.copy(alpha = 0.3f)
+            )
         }
     }
 }

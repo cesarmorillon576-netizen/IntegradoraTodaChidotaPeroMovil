@@ -47,4 +47,6 @@ object AuthManager {
     }
 
     fun isAdmin(): Boolean = user?.rol?.nombre == "administrador"
+    fun isTrabajador(): Boolean = user?.rol?.nombre == "trabajador"
+    fun hasPerms(): Boolean = isAdmin() || isTrabajador()
 }

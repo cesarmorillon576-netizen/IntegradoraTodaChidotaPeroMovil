@@ -2,6 +2,7 @@ package com.example.integradoramovil.repositorios
 
 import android.content.Context
 import com.example.integradoramovil.modelos.Animal
+import com.example.integradoramovil.modelos.AnimalRequest
 import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.modelos.RazaRequest
 import com.example.integradoramovil.network.RetroFitClient
@@ -44,14 +45,21 @@ class AnimalRazaRepository(private val api: apiservice) {
         }
     }
 
-    suspend fun crearAnimal(nombre: String): Result<Animal> {
+    suspend fun crearAnimal(nombre: String, visibilidad: String? = "visible"): Result<Animal> {
         _isLoading.value = true
         _error.value = null
         return try {
-            val response = api.crearAnimal(nombre)
-            // Después de crear, recargamos la lista
-            cargarAnimales()
-            Result.success(Animal(0, nombre, "activo"))
+            val animal = AnimalRequest(nombre, visibilidad)
+            val res = api.crearAnimal(animal)
+            if(res.isSuccessful){
+                cargarAnimales()
+                Result.success(Animal(0, nombre, "activo"))
+            }else{
+                val errorMsg = res.errorBody()?.string() ?: "Error al crear animal"
+                _error.value = errorMsg
+                Result.failure(Exception(errorMsg))
+            }
+
         } catch (e: Exception) {
             _error.value = e.message ?: "Error al crear animal"
             Result.failure(e)
@@ -64,9 +72,20 @@ class AnimalRazaRepository(private val api: apiservice) {
         _isLoading.value = true
         _error.value = null
         return try {
-            api.actualizarAnimal(animal.id, animal.nombre)
-            cargarAnimales()
-            Result.success(Unit)
+            val request = AnimalRequest(animal.nombre)
+            val res = api.actualizarAnimal(animal.id, request)
+            if(res.isSuccessful){
+                cargarAnimales()
+                Result.success(Unit)
+            }else{
+                val errorJson = res.errorBody()?.string()
+                val errorMsg = res.errorBody()?.string() ?: "Error al modificar animal"
+                println("Error al modificar animal: $errorMsg")
+                println("----------- ERROR EN LA PETICION ----:$errorJson ")
+                _error.value = errorMsg
+                Result.failure(Exception(errorMsg))
+            }
+
         } catch (e: Exception) {
             _error.value = e.message ?: "Error al modificar animal"
             Result.failure(e)
@@ -128,7 +147,11 @@ class AnimalRazaRepository(private val api: apiservice) {
         _isLoading.value = true
         _error.value = null
         return try {
-            val razaRequest = RazaRequest(raza.nombre, raza.animal_id)
+            val razaRequest = RazaRequest(
+                raza.nombre,
+                raza.animal_id,
+                visibilidad = "visible"
+            )
             api.crearRaza(razaRequest)
             cargarRazas()
             Result.success(raza)
@@ -144,7 +167,8 @@ class AnimalRazaRepository(private val api: apiservice) {
         _isLoading.value = true
         _error.value = null
         return try {
-            api.actualizarRaza(raza.id, raza.nombre, raza.animal_id)
+            val razaRequest = RazaRequest(raza.nombre, raza.animal_id)
+            api.actualizarRaza(raza.id, razaRequest)
             cargarRazas()
             Result.success(Unit)
         } catch (e: Exception) {

@@ -8,6 +8,13 @@ data class ApiResponse<T>(
     val error: String?
 )
 
+data class DataPaginada<T>(
+    val current_page: Int,
+    val data: List<T>,
+    val last_page: Int,
+    val per_page: Int,
+    val total: Int
+)
 
 // login
 data class LoginResponse(
@@ -31,18 +38,24 @@ data class Rol(
     val nombre: String
 )
 
+data class RazaDetalle(
+    val id: Int,
+    val nombre: String,
+    val animal: Animal? = null
+)
+
 data class Raza(
     val id: Int,
     val nombre: String,
     val visibilidad: String,
     val animal_id: Int?,
-    val animal: String
+    val animal: String? = null
 )
 
 data class Animal(
     val id: Int,
     val nombre: String,
-    val visibilidad: String
+    val visibilidad: String? = null
 )
 
 // hay que manejar las citas
@@ -64,16 +77,29 @@ data class Cita(
     val mascota_id: Int? = null,
     val horario_trabajador_id: Int? = null
 )
-
+// ============================== MMASCOTA =======================
 data class Mascota(
     val id: Int,
     val nombre: String,
+    val sexo: String? = null,
+    val peso: Double? = null,
+    val descripcion: String? = null,
+    val visibilidad: String? = null,
+    val raza: RazaDetalle? = null,
     val cliente: Cliente? = null,
-    val deleted_at: String? = null
+    val deleted_at: String? = null,
+    val fecha_nacimiento: String
 )
 
+
+// ===============================================================
 data class Cliente(
-    val id: Int? = null,
+    val id: Int,
+    val municipio: String? = null,
+    val colonia: String? = null,
+    val codigo_postal: String? = null,
+    val calle: String? = null,
+    val numero_exterior: String? = null,
     val user: User? = null
 )
 
@@ -83,9 +109,15 @@ data class Consulta(
     val indicaciones: String? = ""
 )
 // para peticiones
+data class AnimalRequest(
+    val nombre: String,
+    val visibilidad: String? = "visible"
+)
+
 data class RazaRequest(
     val nombre: String,
-    val id_animal: Int?
+    val animal_id: Int?,
+    val visibilidad: String? = "visible"
 )
 
 data class MascotaRequest(
@@ -95,14 +127,15 @@ data class MascotaRequest(
     val fecha_nacimiento: String,
     val descripcion: String,
     val raza_id: Int,
-    val cliente_id: Int?,
+    val cliente_id: Int? = null,
     val visibilidad: String = "visible"
 )
 
-data class CitaRequest(
+ // esto es del diavlo
+/* data class CitaRequest(
     val estado: String,
     val fecha: String,
     val tipo: String?,
     val mascota_id: Int,
     val horario_trabajador_id: Int
-)
+)*/

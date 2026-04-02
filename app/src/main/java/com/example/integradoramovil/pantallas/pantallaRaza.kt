@@ -1,7 +1,9 @@
 package com.example.integradoramovil.pantallas
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -26,29 +28,21 @@ fun pantallaRaza(
     viewModel: AnimalRazaUserViewModel,
     abrirEditar: (Raza?, Animal?) -> Unit
 ){
-    LaunchedEffect(Unit) {
-        viewModel.cargarRazas()
-    }
 
     val razas by viewModel.razas.collectAsState()
     val animales by viewModel.animales.collectAsState()
 
     val animalesMap = animales.associateBy { it.id }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Background)
-    ){
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
-        ) {
-            items(razas, key = {it.id}){ r ->
-                animalesMap[r.id]?.let { animal ->
-                    tarjeta(r, animal, viewModel, abrirEditar = abrirEditar)
-                }
-                Spacer(modifier = Modifier.height(10.dp))
-            }
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(top = 16.dp, bottom = 80.dp, end = 16.dp, start = 16.dp)
+    ) {
+        items(razas, key = {it.id}){ r ->
+            val animalRelacionado = animalesMap[r.animal_id]
+            tarjeta(r, animalRelacionado ?: Animal(0, "Desconocido", ""),
+                viewModel, abrirEditar)
         }
     }
 }

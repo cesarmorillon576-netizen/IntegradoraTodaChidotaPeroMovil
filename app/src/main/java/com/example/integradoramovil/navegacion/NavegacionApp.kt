@@ -18,7 +18,6 @@ import com.example.integradoramovil.pantallas.loginFirst
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    // val context = LocalContext.current
     val inicio = if (AuthManager.token != null) "home" else "loginfirst"
     NavHost(
         navController = navController,

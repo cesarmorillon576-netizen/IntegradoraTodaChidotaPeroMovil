@@ -1,7 +1,6 @@
 package com.example.integradoramovil.viewModel
 
 import android.content.Context
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -22,13 +21,20 @@ class AnimalRazaUserViewModel(
     val error: StateFlow<String?> = repository.error
 
     init {
-        cargarRazas()
-        cargarAnimales()
+        fullLoad()
+    }
+
+    fun fullLoad(){
+        viewModelScope.launch {
+            repository.cargarRazas()
+            repository.cargarAnimales()
+        }
     }
 
     // ========== FUNCIONES DE RAZAS ==========
 
     fun cargarRazas() {
+        if (repository.razas.value.isNotEmpty() || repository.isLoading.value) return
         viewModelScope.launch {
             repository.cargarRazas()
         }
@@ -37,24 +43,28 @@ class AnimalRazaUserViewModel(
     fun modificarRaza(raza: Raza) {
         viewModelScope.launch {
             repository.modificarRaza(raza)
+            cargarRazas()
         }
     }
 
     fun eliminarRaza(raza: Raza) {
         viewModelScope.launch {
             repository.eliminarRaza(raza.id)
+            cargarRazas()
         }
     }
 
     fun crearRazas(raza: Raza) {
         viewModelScope.launch {
             repository.crearRaza(raza)
+            cargarRazas()
         }
     }
 
     // ========== FUNCIONES DE ANIMALES ==========
 
     fun cargarAnimales() {
+        if (repository.animales.value.isNotEmpty() || repository.isLoading.value) return
         viewModelScope.launch {
             repository.cargarAnimales()
         }
@@ -63,18 +73,21 @@ class AnimalRazaUserViewModel(
     fun modificarAnimal(animal: Animal) {
         viewModelScope.launch {
             repository.modificarAnimal(animal)
+            cargarAnimales()
         }
     }
 
     fun eliminarAnimal(animal: Animal) {
         viewModelScope.launch {
             repository.eliminarAnimal(animal.id)
+            cargarAnimales()
         }
     }
 
-    fun crearAnimal(animal: String) {
+    fun crearAnimal(animal: String, visibilidad: String? = "visible") {
         viewModelScope.launch {
-            repository.crearAnimal(animal)
+            repository.crearAnimal(animal, visibilidad)
+            cargarAnimales()
         }
     }
 
@@ -86,11 +99,6 @@ class AnimalRazaUserViewModel(
                 repository.cambiarEstadoRaza(raza.id)
             }
         }
-    }
-
-
-fun clearError() {
-        repository.clearError()
     }
 
     companion object Factory {

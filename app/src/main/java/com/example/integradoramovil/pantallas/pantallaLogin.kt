@@ -1,6 +1,6 @@
 package com.example.integradoramovil.pantallas
 
-import android.util.Log
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -11,33 +11,15 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
@@ -46,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -55,24 +38,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.example.integradoramovil.R
-import com.example.integradoramovil.viewModel.*
-import com.example.integradoramovil.ui.theme.Background
-import com.example.integradoramovil.ui.theme.BackgroundCard
-import com.example.integradoramovil.ui.theme.BackgroundCard2
-import com.example.integradoramovil.ui.theme.baloo
-import com.example.integradoramovil.ui.theme.buttonColor
-import com.example.integradoramovil.ui.theme.redText
-import com.example.integradoramovil.ui.theme.textColor
-import com.example.integradoramovil.ui.theme.textColorsubMain
-import com.example.integradoramovil.ui.theme.textInputOrange
-import com.example.integradoramovil.ui.theme.textOrange
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.runtime.setValue
+import com.example.integradoramovil.ui.theme.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.integradoramovil.viewModel.LoginViewModel
 
 @Composable
-fun loginFirst( navController: NavController){
+fun loginFirst(navController: NavController) {
     val RowAnimation = rememberInfiniteTransition()
     val offsetY by RowAnimation.animateFloat(
         initialValue = -10f,
@@ -83,14 +54,14 @@ fun loginFirst( navController: NavController){
         )
     )
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Column (
+    ) {
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(20.dp, 0.dp)
@@ -101,30 +72,36 @@ fun loginFirst( navController: NavController){
                     shadow = Shadow(
                         radius = 10.dp,
                         spread = 6.dp,
-                        color = Color(0x40000000),
+                        color = Color(0x20000000),
                         offset = DpOffset(x = 4.dp, 4.dp)
                     )
-                )
-            , horizontalAlignment = Alignment.CenterHorizontally,
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(2.dp)
-        ){
+        ) {
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Veterinaria Nairobi", style = TextStyle(
-                fontSize = 38.sp,
-                textAlign = TextAlign.Center,
-                fontFamily = baloo,
-                lineHeight = 40.sp,
-            ), color = textColor, modifier = Modifier.padding(
-                10.dp,0.dp
-            ))
-            Text(text = "Ellos no pueden hablar, déjanos hablar por ellos ", style = TextStyle(
-                fontSize = 34.sp,
-                textAlign = TextAlign.Center,
-                fontFamily = baloo,
-                lineHeight = 40.sp,
-            ), color = textColor, modifier = Modifier.padding(
-                1.dp,0.dp
-            ))
+            Text(
+                text = "Veterinaria Nairobi",
+                style = TextStyle(
+                    fontSize = 38.sp,
+                    textAlign = TextAlign.Center,
+                    fontFamily = baloo,
+                    lineHeight = 40.sp,
+                ),
+                color = TextMain,
+                modifier = Modifier.padding(10.dp, 0.dp)
+            )
+            Text(
+                text = "Ellos no pueden hablar, déjanos hablar por ellos",
+                style = TextStyle(
+                    fontSize = 34.sp,
+                    textAlign = TextAlign.Center,
+                    fontFamily = baloo,
+                    lineHeight = 40.sp,
+                ),
+                color = TextSub,
+                modifier = Modifier.padding(1.dp, 0.dp)
+            )
             Image(
                 painter = painterResource(R.drawable.huella),
                 contentDescription = "Garra",
@@ -138,289 +115,214 @@ fun loginFirst( navController: NavController){
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "Estrella",
-                modifier = Modifier.size(48.dp)
-                    .offset( y = offsetY.dp).rotate(90f),
-                tint = textColor
+                modifier = Modifier
+                    .size(48.dp)
+                    .offset(y = offsetY.dp)
+                    .rotate(90f),
+                tint = PrimaryOrange
             )
-            Text(text = "Presioname", style = TextStyle(
-                fontSize = 24.sp,
-                textAlign = TextAlign.Center,
-                fontFamily = baloo,
-                lineHeight = 40.sp,
-            ), color = textColor, modifier = Modifier.padding(
-                1.dp,0.dp
-            ))
-
+            Text(
+                text = "Presioname",
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    textAlign = TextAlign.Center,
+                    fontFamily = baloo,
+                    lineHeight = 40.sp,
+                ),
+                color = PrimaryOrange,
+                modifier = Modifier.padding(1.dp, 0.dp)
+            )
         }
     }
 }
+
 @Composable
-fun LoginSecond(navController: NavController){
+fun LoginSecond(navController: NavController) {
     val context = LocalContext.current
+    val scrollState = rememberScrollState()
     val viewModel: LoginViewModel = viewModel(factory = LoginViewModel.create(context))
-    var correo by remember { mutableStateOf("") }
-    var contraseña by remember { mutableStateOf("") }
+    var correo by rememberSaveable { mutableStateOf("") }
+    var contraseña by rememberSaveable { mutableStateOf("") }
     val emailError by viewModel.emailValidationError.collectAsState(initial = null)
     val passwordError by viewModel.passwordValidationError.collectAsState(initial = null)
     val loginError by viewModel.loginError.collectAsState(initial = null)
     val isLoading by viewModel.isLoading.collectAsState(initial = false)
-    Column (
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Background),
+            .background(Background)
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Background)
-
-        ){
-            Column (
+        ) {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp, 0.dp)
-                    .background(BackgroundCard2)
+                    .background(BackgroundCard)
                     .zIndex(100f)
-                    .align( Alignment.Center)
-                /* .dropShadow(
-                     shape = RoundedCornerShape(10.dp),
-                     shadow = Shadow(
-                         radius = 10.dp,
-                         spread = 6.dp,
-                         color = Color(0x40000000),
-                         offset = DpOffset(x = 1.dp, 1.dp)
-                     )
-                 )*/
-                ,
-                //horizontalAlignment = Alignment.CenterHorizontally,
+                    .align(Alignment.Center)
+                    .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(2.dp)
-            )
-            {
+            ) {
                 Spacer(modifier = Modifier.height(20.dp))
-                Text(text = "Inicio de sesión",
+                Text(
+                    text = "Inicio de sesión",
                     style = TextStyle(
                         fontSize = 34.sp,
                         textAlign = TextAlign.Center,
                         fontFamily = baloo,
                         lineHeight = 40.sp,
+                    ),
+                    color = TextMain,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = "Inicia sesión con los datos que ingresaste durante tu registro",
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        fontFamily = baloo,
+                        lineHeight = 22.sp,
+                    ),
+                    color = TextSub,
+                    modifier = Modifier.padding(15.dp, 0.dp)
+                )
 
-                        ), color = textColorsubMain,
-                    modifier = Modifier.fillMaxWidth())
-                Text(text = "Inicia sesión con los datos que ingresaste durante tu registro",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        fontFamily = baloo,
-                        lineHeight = 20.sp,
-                    ), color = textOrange,
-                    modifier = Modifier.padding(15.dp,0.dp))
                 loginError?.let { error ->
-                    Text(text = error,
-                        style = TextStyle(
-                            fontSize = 15.sp,
-                            fontFamily = baloo,
-                            lineHeight = 15.sp
-                        ),modifier = Modifier.padding(15.dp,0.dp),
-                        color = redText)
-                }
-                Text(text = "Ingresa tu correo electrónico o número telefónico",
-                    style = TextStyle(
-                        fontSize = 17.sp,
-                        fontFamily = baloo,
-                        lineHeight = 15.sp,
-                    ), color = textColorsubMain,
-                    modifier = Modifier.padding(15.dp,0.dp))
-                emailError?.let {
-                    Text(text = it,
-                        style = TextStyle(
-                            fontSize = 15.sp,
-                            fontFamily = baloo,
-                            lineHeight = 15.sp,
-                        ), color = redText,
-                        modifier = Modifier.padding(15.dp,0.dp)
+                    Text(
+                        text = error,
+                        style = TextStyle(fontSize = 14.sp, fontFamily = baloo),
+                        modifier = Modifier.padding(15.dp, 0.dp),
+                        color = ErrorRed
                     )
                 }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
                 OutlinedTextField(
                     value = correo,
-                    onValueChange = { 
+                    onValueChange = {
                         correo = it
                         viewModel.validateEmail(it)
                     },
+                    label = { Text("Correo electrónico") },
                     singleLine = true,
-                    placeholder = {Text(text = "Nombre@ejemplo.com",
-                        color = BackgroundCard)},
-                    textStyle = TextStyle(
-                        fontFamily = baloo,
-                        fontSize = 16.sp,
-                        color = textInputOrange
-                    ),
+                    textStyle = TextStyle(fontFamily = baloo, fontSize = 16.sp, color = TextMain),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFF583500),
-                        unfocusedBorderColor = BackgroundCard,
-                        cursorColor = Color(0xFF583500),
-                        focusedLabelColor = Color(0xFF583500),
-                        unfocusedLabelColor = BackgroundCard,
-                        focusedTextColor = BackgroundCard,
-                        unfocusedTextColor = BackgroundCard
+                        focusedBorderColor = PrimaryOrange,
+                        unfocusedBorderColor = TextSub.copy(alpha = 0.5f),
+                        focusedLabelColor = PrimaryOrange,
+                        cursorColor = PrimaryOrange
                     ),
-                    modifier = Modifier
-                        .padding(15.dp,0.dp)
-                        .fillMaxWidth()
-
-
+                    modifier = Modifier.padding(15.dp, 0.dp).fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(text = "Ingresa tu contraseña",
-                    style = TextStyle(
-                        fontSize = 17.sp,
-                        fontFamily = baloo,
-                        lineHeight = 15.sp,
-                    ), color = textColorsubMain,
-                    modifier = Modifier.padding(15.dp,0.dp)
-                )
-                passwordError?.let {
-                    Text(text = it,
-                        style = TextStyle(
-                            fontSize = 15.sp,
-                            fontFamily = baloo,
-                            lineHeight = 15.sp,
-                        ), color = redText,
-                        modifier = Modifier.padding(15.dp,0.dp)
+
+                emailError?.let {
+                    Text(
+                        text = it,
+                        style = TextStyle(fontSize = 12.sp, fontFamily = baloo),
+                        color = ErrorRed,
+                        modifier = Modifier.padding(horizontal = 15.dp)
                     )
                 }
+
+                Spacer(modifier = Modifier.height(10.dp))
 
                 OutlinedTextField(
                     value = contraseña,
-                    onValueChange = { 
+                    onValueChange = {
                         contraseña = it
                         viewModel.validatePassword(it)
                     },
+                    label = { Text("Contraseña") },
                     singleLine = true,
-                    placeholder = {Text(text = "****",
-                        color = BackgroundCard)},
-                    textStyle = TextStyle(
-                        fontFamily = baloo,
-                        fontSize = 14.sp,
-                        color = textInputOrange
-                    ),
+                    textStyle = TextStyle(fontFamily = baloo, fontSize = 16.sp, color = TextMain),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     visualTransformation = PasswordVisualTransformation(),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFF583500),
-                        unfocusedBorderColor = BackgroundCard,
-                        cursorColor = Color(0xFF583500),
-                        focusedLabelColor = Color(0xFF583500),
-                        unfocusedLabelColor = BackgroundCard,
-                        focusedTextColor = BackgroundCard,
-                        unfocusedTextColor = BackgroundCard
+                        focusedBorderColor = PrimaryOrange,
+                        unfocusedBorderColor = TextSub.copy(alpha = 0.5f),
+                        focusedLabelColor = PrimaryOrange,
+                        cursorColor = PrimaryOrange
                     ),
-                    modifier = Modifier
-                        .padding(15.dp,0.dp)
-                        .fillMaxWidth()
-
-
+                    modifier = Modifier.padding(15.dp, 0.dp).fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(2.dp))
-                Row(
-                    modifier = Modifier
-                        .padding(15.dp,0.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ){
+
+                passwordError?.let {
                     Text(
-                        text = "Reclamar cuenta",
-                        fontSize = 14.sp,
-                        color = redText
-                    )
-                    Text(
-                        text = "¿Olvidaste tu contraseña?",
-                        fontSize = 14.sp,
-                        color = redText
+                        text = it,
+                        style = TextStyle(fontSize = 12.sp, fontFamily = baloo),
+                        color = ErrorRed,
+                        modifier = Modifier.padding(horizontal = 15.dp)
                     )
                 }
-                Spacer(modifier = Modifier.height(5.dp))
-                Button(onClick = {
-                    viewModel.login(correo, contraseña, navController, context)
-                },
-                    shape = RoundedCornerShape(3.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = buttonColor,
-                    ), modifier = Modifier.fillMaxWidth().padding(40.dp,0.dp)){
-                    if(isLoading){
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(24.dp),
-                            color = Color.White,
-                            strokeWidth =2.dp
-                        )
-                    }else{
-                        Text(text="Iniciar sesión",
-                            style= TextStyle(
-                                fontFamily = baloo,
-                                fontSize = 17.sp,
-                                color = Color.White
-                            ))
+
+                Row(
+                    modifier = Modifier.padding(15.dp, 5.dp).fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = "Reclamar cuenta", fontSize = 13.sp, color = PrimaryOrange)
+                    Text(text = "¿Olvidaste tu contraseña?", fontSize = 13.sp, color = PrimaryOrange)
+                }
+
+                Spacer(modifier = Modifier.height(15.dp))
+
+                Button(
+                    onClick = { viewModel.login(correo, contraseña, navController, context) },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryOrange),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp).height(50.dp)
+                ) {
+                    if (isLoading) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp), color = Color.White)
+                    } else {
+                        Text(text = "Iniciar sesión", style = TextStyle(fontFamily = baloo, fontSize = 18.sp, color = Color.White))
                     }
                 }
-                Spacer(modifier = Modifier.height(5.dp))
+
+                Spacer(modifier = Modifier.height(15.dp))
+
                 Row(
-                    modifier =Modifier.padding(15.dp,0.dp).fillMaxWidth(),
+                    modifier = Modifier.padding(15.dp, 0.dp).fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
-                ){
-                    Text(text="¿No tienes una cuenta?",
-                        style= TextStyle(
-                            fontFamily = baloo,
-                            fontSize = 14.sp,
-                            color = textColorsubMain
-                        ),modifier = Modifier.padding(0.dp,0.dp,5.dp,0.dp))
-                    Text(text="Regístrate",
-                        style= TextStyle(
-                            fontFamily = baloo,
-                            fontSize = 14.sp,
-                            color = redText
-                        ))
+                ) {
+                    Text(text = "¿No tienes una cuenta?", style = TextStyle(fontFamily = baloo, fontSize = 14.sp, color = TextSub))
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(text = "Regístrate", style = TextStyle(fontFamily = baloo, fontSize = 14.sp, color = PrimaryOrange, fontWeight = FontWeight.Bold))
                 }
                 Spacer(modifier = Modifier.height(20.dp))
             }
-            Box(
-                modifier = Modifier.zIndex(1f)
-            )
-            {
+
+            Box(modifier = Modifier.zIndex(1f)) {
                 Image(
                     painter = painterResource(R.drawable.huella),
                     contentDescription = "",
-                    modifier = Modifier.size(300.dp)
-                        .offset(150.dp,80.dp)
-                        .rotate(45f)
+                    modifier = Modifier.size(300.dp).offset(150.dp, 80.dp).rotate(45f),
+                    alpha = 0.1f
                 )
             }
-            Box(
-                modifier = Modifier.zIndex(2f)
-            )
-            {
+            Box(modifier = Modifier.zIndex(2f)) {
                 Image(
                     painter = painterResource(R.drawable.hueso),
                     contentDescription = "",
-                    modifier = Modifier.size(210.dp)
-                        .offset(-40.dp,80.dp)
-                        .rotate(5f)
+                    modifier = Modifier.size(210.dp).offset(-40.dp, 80.dp).rotate(5f),
+                    alpha = 0.1f
                 )
             }
-            Box(
-                modifier = Modifier.zIndex(1f)
-            )
-            {
+            Box(modifier = Modifier.zIndex(1f)) {
                 Image(
                     painter = painterResource(R.drawable.gato),
                     contentDescription = "",
-                    modifier = Modifier.size(300.dp)
-                        .offset(-130.dp,550.dp)
-                        .rotate(-15f)
+                    modifier = Modifier.size(300.dp).offset(-130.dp, 550.dp).rotate(-15f),
+                    alpha = 0.1f
                 )
             }
         }
-
-
     }
-
 }

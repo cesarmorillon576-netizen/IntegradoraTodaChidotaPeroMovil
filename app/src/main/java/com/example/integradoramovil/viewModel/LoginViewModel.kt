@@ -13,7 +13,7 @@ class LoginViewModel(
     private val repository: LoginRepository
 ) : ViewModel() {
     
-    // Expose repository StateFlows
+    // los stateflow
     val isLoading = repository.isLoading
     val loginError = repository.loginError
     val emailValidationError = repository.emailValidationError
@@ -47,7 +47,8 @@ class LoginViewModel(
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    val api = RetroFitClient.getApi(context)
+                    val appContext = context.applicationContext
+                    val api = RetroFitClient.getApi(appContext)
                     val repository = LoginRepository(api)
                     return LoginViewModel(repository) as T
                 }

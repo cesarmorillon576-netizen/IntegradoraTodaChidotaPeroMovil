@@ -13,10 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.integradoramovil.ui.theme.buttonColor
-import com.example.integradoramovil.ui.theme.textColor
-import com.example.integradoramovil.ui.theme.textColorsubMain
-import com.example.integradoramovil.ui.theme.textOrange
+// Importamos la nueva paleta
+import com.example.integradoramovil.ui.theme.BackgroundCard
+import com.example.integradoramovil.ui.theme.PrimaryOrange
+import com.example.integradoramovil.ui.theme.TextMain
+import com.example.integradoramovil.ui.theme.TextSub
 
 @Composable
 fun Pagination(
@@ -25,52 +26,72 @@ fun Pagination(
     onPageChange: (Int) -> Unit
 ) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = textColorsubMain,
-        tonalElevation = 8.dp
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        color = BackgroundCard,
+        shape = RoundedCornerShape(20.dp),
+        shadowElevation = 4.dp
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(horizontal = 8.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Botón Anterior
             IconButton(
                 onClick = { onPageChange(actual - 1) },
                 enabled = actual > 1,
                 colors = IconButtonDefaults.iconButtonColors(
-                    contentColor = textOrange,
-                    disabledContentColor = Color.Gray
+                    contentColor = PrimaryOrange,
+                    disabledContentColor = TextSub.copy(alpha = 0.3f)
                 )
             ) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBackIos, contentDescription = "Anterior")
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBackIos,
+                    contentDescription = "Anterior",
+                    modifier = Modifier.size(20.dp)
+                )
             }
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Página",
-                    color = textColor.copy(alpha = 0.6f),
-                    fontSize = 12.sp
+                    text = "PÁGINA",
+                    color = TextSub,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    letterSpacing = 1.sp
                 )
-                Text(
-                    text = "$actual de $total",
-                    color = textColor,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "$actual",
+                        color = PrimaryOrange,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Black
+                    )
+                    Text(
+                        text = " / $total",
+                        color = TextMain.copy(alpha = 0.6f),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
             }
 
             IconButton(
                 onClick = { onPageChange(actual + 1) },
                 enabled = actual < total,
                 colors = IconButtonDefaults.iconButtonColors(
-                    contentColor = textOrange,
-                    disabledContentColor = Color.Gray
+                    contentColor = PrimaryOrange,
+                    disabledContentColor = TextSub.copy(alpha = 0.3f)
                 )
             ) {
-                Icon(Icons.AutoMirrored.Filled.ArrowForwardIos, contentDescription = "Siguiente")
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                    contentDescription = "Siguiente",
+                    modifier = Modifier.size(20.dp)
+                )
             }
         }
     }

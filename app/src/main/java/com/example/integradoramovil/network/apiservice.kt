@@ -1,15 +1,16 @@
 package com.example.integradoramovil.network
 
 import com.example.integradoramovil.modelos.Animal
+import com.example.integradoramovil.modelos.AnimalRequest
 import com.example.integradoramovil.modelos.ApiResponse
 import com.example.integradoramovil.modelos.Raza
 import com.example.integradoramovil.modelos.RazaRequest
 import com.example.integradoramovil.modelos.Cita
-import com.example.integradoramovil.modelos.CitaRequest
+import com.example.integradoramovil.modelos.Cliente
+import com.example.integradoramovil.modelos.DataPaginada
 import com.example.integradoramovil.modelos.LoginResponse
 import com.example.integradoramovil.modelos.Mascota
 import com.example.integradoramovil.modelos.MascotaRequest
-import com.example.integradoramovil.modelos.PaginacionCitas
 import retrofit2.Response
 import retrofit2.http.*
 import retrofit2.http.GET
@@ -24,9 +25,13 @@ interface apiservice {
         @Field("password") password: String
     ): Response<ApiResponse<LoginResponse>>
 
+    // obtener clientes
+    @GET("user/full")
+    suspend fun obtenerClientes(): Response<ApiResponse<List<Cliente>>>
+
 
     // rutas para razas
-    @GET("raza/full")
+    @GET("raza/fullAndroid")
     suspend fun obtenerRazas(): Response<ApiResponse<List<Raza>>>
 
     @POST("raza/raza")
@@ -34,41 +39,38 @@ interface apiservice {
         @Body raza: RazaRequest
     ): Response<ApiResponse<Unit>>
 
-    @FormUrlEncoded
+
     @PUT("raza/raza/{id}")
     suspend fun actualizarRaza(
         @Path("id") id: Int,
-        @Field("nombre") nombre: String,
-        @Field("animal_id") animal_id: Int?
+        @Body body: RazaRequest
     ): Response<ApiResponse<Unit>>
 
 
-    @DELETE("raza/{id}")
+    @DELETE("raza/raza/{id}")
     suspend fun eliminarRaza(
         @Path("id") id_raza: Int
     ): Response<ApiResponse<Unit>>
 
 
-    @PUT("raza/cambiar-estado/{id}")
+    @PATCH("raza/cambiar-estado/{id}")
     suspend fun cambiarEstadoRaza(
         @Path("id") id: Int
     ): Response<ApiResponse<Unit>>
 
     // rutas para animales
-    @GET("animal/full")
+    @GET("animal/fullAndroid")
     suspend fun obtenerAnimales(): Response<ApiResponse<List<Animal>>>
 
-    @FormUrlEncoded
     @POST("animal/store")
     suspend fun crearAnimal(
-        @Field("nombre") nombre: String
+        @Body body: AnimalRequest
     ): Response<ApiResponse<Unit>>
 
-    @FormUrlEncoded
-    @PUT("animal/update/{id}")
+    @PATCH("animal/update/{id}")
     suspend fun actualizarAnimal(
         @Path("id") id: Int,
-        @Field("nombre") nombre: String
+        @Body body: AnimalRequest
     ): Response<ApiResponse<Unit>>
 
     @DELETE("animal/delete/{id}")
@@ -89,7 +91,7 @@ interface apiservice {
         @Path("history") history: Boolean = false,
         @Query("page") pagina: Int,
         @Body filtros: Map<String, String> = emptyMap()
-    ): Response<ApiResponse<PaginacionCitas>>
+    ): Response<ApiResponse<DataPaginada<Cita>>>
 
     @PUT("cita/cambiar-estado/{id}")
     suspend fun cambiarEstadoCita(
@@ -98,19 +100,25 @@ interface apiservice {
     )
 
     // rutas de mascotas
-    @GET("mascota/index")
+    @GET("mascotas/")
     suspend fun obtenerMascotas(
         @Query("page") pagina: Int = 1
-    ): Response<ApiResponse<List<Mascota>>>
+    ): Response<ApiResponse<DataPaginada<Mascota>>>
 
-    @POST("mascota/store")
+    @POST("mascotas/")
     suspend fun crearMascota(
         @Body mascota: MascotaRequest
     ): Response<ApiResponse<Mascota>>
 
-    @PUT("mascota/update/{id}")
+    @PUT("mascotas/{id}")
     suspend fun actualizarMascota(
         @Path("id") id: Int,
         @Body mascota: MascotaRequest
     ): Response<ApiResponse<Mascota>>
+
+    @DELETE("mascotas/{id}")
+    suspend fun eliminarMascota(
+        @Path("id") id: Int
+    ): Response<ApiResponse<Unit>>
+
 }

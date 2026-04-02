@@ -1,47 +1,44 @@
 package com.example.integradoramovil.componentes
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.unit.sp
+import com.example.integradoramovil.R
 import com.example.integradoramovil.modelos.Animal
+import com.example.integradoramovil.modelos.AuthManager
 import com.example.integradoramovil.modelos.Raza
-import com.example.integradoramovil.ui.theme.Background
-import com.example.integradoramovil.ui.theme.BackgroundCard
-import com.example.integradoramovil.ui.theme.BackgroundCard2
-import com.example.integradoramovil.ui.theme.dropDownBackground
-import com.example.integradoramovil.ui.theme.redText
-import com.example.integradoramovil.ui.theme.textColor
-import com.example.integradoramovil.ui.theme.textOrange
+import com.example.integradoramovil.ui.theme.*
 import com.example.integradoramovil.viewModel.AnimalRazaUserViewModel
-import kotlinx.coroutines.launch
 
+// mejorando el ux/ui pq me soy ingeniero de diseño
+@Composable
+private fun StatusBadge(visibilidad: String) {
+    val esVisible = visibilidad.lowercase() == "visible"
+    Surface(
+        color = (if (esVisible) SuccessGreen else TextSub).copy(alpha = 0.1f),
+        shape = RoundedCornerShape(6.dp)
+    ) {
+        Text(
+            text = visibilidad.uppercase(),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Black,
+            color = if (esVisible) SuccessGreen else TextSub,
+            fontFamily = baloo
+        )
+    }
+}
 
-// tarjeta de raza
+// --- TARJETA DE RAZA ---
 @Composable
 fun tarjeta(
     raza: Raza,
@@ -49,221 +46,107 @@ fun tarjeta(
     viewModel: AnimalRazaUserViewModel,
     abrirEditar: (Raza?, Animal?) -> Unit
 ) {
-    Card (
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = if(raza.visibilidad == "visible") BackgroundCard2
-            else BackgroundCard
-        )
-    ){
-        Row (
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            Column {
+    val esVisible = raza.visibilidad == "visible"
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(if (esVisible) 1f else 0.6f),
+        colors = CardDefaults.cardColors(containerColor = BackgroundCard),
+        elevation = CardDefaults.cardElevation(defaultElevation = if (esVisible) 2.dp else 0.dp),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(
-                            color = if(raza.visibilidad == "visible") dropDownBackground
-                            else BackgroundCard2,
-                            fontWeight = FontWeight.Bold)) {
-                            append("Nombre: ")
-                        }
-
-                        withStyle(style = SpanStyle(
-                            color = if(raza.visibilidad == "visible") redText
-                            else Background)) {
-                            append(raza.nombre)
-                        }
-                    }
-                )
-
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(
-                            color = if(raza.visibilidad == "visible") dropDownBackground
-                            else BackgroundCard2,
-                            fontWeight = FontWeight.Bold)) {
-                            append("Estado: ")
-                        }
-
-                        withStyle(style = SpanStyle(
-                            color = if(raza.visibilidad == "visible") redText
-                            else Background)) {
-                            append(raza.visibilidad)
-                        }
-                    }
+                    text = raza.nombre,
+                    color = TextMain,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = baloo
                 )
                 Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(
-                            color = if(raza.visibilidad == "visible") dropDownBackground
-                            else BackgroundCard2,
-                            fontWeight = FontWeight.Bold)) {
-                            append("Animal: ")
-                        }
-
-                        withStyle(style = SpanStyle(
-                            color = if(raza.visibilidad == "visible") redText
-                            else Background)) {
-                            append(animal.nombre)
-                        }
-                    }
+                    text = "Animal: ${animal.nombre}",
+                    color = TextSub,
+                    fontSize = 13.sp,
+                    fontFamily = baloo
                 )
+                Spacer(modifier = Modifier.height(6.dp))
+                StatusBadge(raza.visibilidad)
             }
 
-            Row{
-                // Editar
-                IconButton(
-                    onClick = {
-                        abrirEditar(raza, animal)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if(AuthManager.isAdmin()){
+                    IconButton(onClick = { abrirEditar(raza, animal) }) {
+                        Icon(painterResource(R.drawable.editar), "Editar", tint = PrimaryOrange, modifier = Modifier.size(22.dp))
                     }
-                ) {
-                    Icon(
-                        painter = painterResource(id = com.example.integradoramovil.R.drawable.editar),
-                        contentDescription = "Editar",
-                        tint = if(raza.visibilidad == "invisible") textColor
-                        else Color.Black
-                    )
-                }
-
-                // Cambiar estado
-                IconButton(
-                    onClick = {
-                        viewModel.cambiarEstado(null, raza)
+                    IconButton(onClick = { viewModel.cambiarEstado(null, raza) }) {
+                        Icon(painterResource(R.drawable.cambiar_estado), "Estado", tint = if (esVisible) PrimaryOrange else TextSub, modifier = Modifier.size(22.dp))
                     }
-                ) {
-                    Icon(
-                        painter = painterResource(id = com.example.integradoramovil.R.drawable.cambiar_estado),
-                        contentDescription = "Editar",
-                        tint = if(raza.visibilidad == "invisible") textColor
-                        else Color.Black
-                    )
-                }
-
-                // Eliminar
-                IconButton(
-                    onClick = {
-                        viewModel.eliminarRaza(raza)
+                    IconButton(onClick = { viewModel.eliminarRaza(raza) }) {
+                        Icon(painterResource(R.drawable.borrar), "Borrar", tint = ErrorRed, modifier = Modifier.size(22.dp))
                     }
-                ) {
-                    Icon(
-                        painter = painterResource(id = com.example.integradoramovil.R.drawable.borrar),
-                        contentDescription = "Editar",
-                        tint = if(raza.visibilidad == "invisible") textColor
-                        else Color.Black
-                    )
                 }
             }
         }
     }
 }
 
-
-// tarjeta de animal
+// --- TARJETA DE ANIMAL ---
 @Composable
 fun tarjeta(
     animal: Animal,
     viewModel: AnimalRazaUserViewModel,
     abrirEditar: (Raza?, Animal?) -> Unit
-){
-    Card (
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = if(animal.visibilidad == "visible") BackgroundCard2
-            else BackgroundCard
-        )
-    ){
-        LazyRow (
-            modifier = Modifier.fillMaxWidth().padding(20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            items(1){
-                Column{
-                    Text(
-                        text = buildAnnotatedString {
-                            withStyle(style = SpanStyle(
-                                color = if(animal.visibilidad == "visible") dropDownBackground
-                                else BackgroundCard2,
-                                fontWeight = FontWeight.Bold)) {
-                                append("Nombre: ")
-                            }
+) {
+    val esVisible = animal.visibilidad == "visible"
 
-                            withStyle(style = SpanStyle(
-                                color = if(animal.visibilidad == "visible") redText
-                                else Background)) {
-                                append(animal.nombre)
-                            }
-                        }
-                    )
-                    Text(
-                        text = buildAnnotatedString {
-                            withStyle(style = SpanStyle(
-                                color = if(animal.visibilidad == "visible") dropDownBackground
-                                else BackgroundCard2,
-                                fontWeight = FontWeight.Bold)) {
-                                append("Estado: ")
-                            }
-
-                            withStyle(style = SpanStyle(
-                                color = if(animal.visibilidad == "visible") redText
-                                else Background)) {
-                                append(animal.visibilidad)
-                            }
-                        }
-                    )
-
-                    Row{
-                        // Editar
-                        IconButton(
-                            onClick = {
-                                abrirEditar(null, animal)
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource(id = com.example.integradoramovil.R.drawable.editar),
-                                contentDescription = "Editar",
-                                tint = if(animal.visibilidad == "invisible") textColor
-                                else Color.Black
-                            )
-                        }
-
-                        // Cambiar estado
-                        IconButton(
-                            onClick = {
-                                viewModel.cambiarEstado(animal, null)
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource(id = com.example.integradoramovil.R.drawable.cambiar_estado),
-                                contentDescription = "Cambiar estado",
-                                tint = if(animal.visibilidad == "invisible") textColor
-                                else Color.Black
-                            )
-                        }
-
-                        // Eliminar
-                        IconButton(
-                            onClick = {
-                                viewModel.eliminarAnimal(animal)
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource(id = com.example.integradoramovil.R.drawable.borrar),
-                                contentDescription = "Borrar",
-                                tint = if(animal.visibilidad == "invisible") textColor
-                                else Color.Black
-                            )
-                        }
-
-
-                    }
-
-                }
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(if (esVisible) 1f else 0.6f),
+        colors = CardDefaults.cardColors(containerColor = BackgroundCard),
+        elevation = CardDefaults.cardElevation(defaultElevation = if (esVisible) 2.dp else 0.dp),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = animal.nombre,
+                    color = TextMain,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = baloo
+                )
+                Text(
+                    text = "Dato primario",
+                    color = TextSub,
+                    fontSize = 13.sp,
+                    fontFamily = baloo
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                StatusBadge(animal.visibilidad ?: "Oculto")
             }
 
+            Row {
+                if(AuthManager.isAdmin()){
+                    IconButton(onClick = { abrirEditar(null, animal) }) {
+                        Icon(painterResource(R.drawable.editar), "Editar", tint = PrimaryOrange, modifier = Modifier.size(22.dp))
+                    }
+                    IconButton(onClick = { viewModel.cambiarEstado(animal, null) }) {
+                        Icon(painterResource(R.drawable.cambiar_estado), "Estado", tint = if (esVisible) PrimaryOrange else TextSub, modifier = Modifier.size(22.dp))
+                    }
+                    IconButton(onClick = { viewModel.eliminarAnimal(animal) }) {
+                        Icon(painterResource(R.drawable.borrar), "Borrar", tint = ErrorRed, modifier = Modifier.size(22.dp))
+                    }
+                }
+            }
         }
     }
 }
-
